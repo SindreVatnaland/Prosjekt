@@ -54,8 +54,8 @@ class tower_defense:
         self.width = width
         self.height = height
 
-        self.health = 200
-        self.speed = 5
+        self.health = 10
+        self.speed = 8
         self.wave = 0
 
         self.enemies_list = []
@@ -98,7 +98,7 @@ class tower_defense:
     def draw_enemies(self):
         for i, enemy in enumerate(self.enemies_on_screen):
             self.move_enemy(enemy, i)
-            if self.enemy_type_list[i] == 0:
+            if self.enemy_number == 0:
                 continue
             elif self.enemy_type_list[i] == 1:
                 display.blit(green_enemy_surface, enemy)
@@ -113,30 +113,48 @@ class tower_defense:
         return
 
     def move_enemy(self, enemy, index):
-        self.check_turn_collision(enemy, index)
-        if self.enemy_state_list[index] == 0:
-            enemy.centerx += self.speed
-        elif self.enemy_state_list[index] == 1:
-            enemy.centery += self.speed
-        elif self.enemy_state_list[index] == 2:
-            enemy.centerx -= self.speed
-        else:
-            enemy.centery -= self.speed
-        return
+        if not self.check_turn_collision(enemy, index):
+            if self.enemy_number >= 1:
+                if self.enemy_state_list[index] == 0:
+                    enemy.centerx += self.speed
+                elif self.enemy_state_list[index] == 1:
+                    enemy.centery += self.speed
+                elif self.enemy_state_list[index] == 2:
+                    enemy.centerx -= self.speed
+                else:
+                    enemy.centery -= self.speed
+        return True
 
     def check_turn_collision(self, enemy, index):
         for i, box in enumerate(self.turn_collision_box_list):
             if box.colliderect(enemy):
                 if i in [1, 3, 7, 9, 11]:
                     self.enemy_state_list[index] = 0
-                elif i in [0,4,6,10]:
+                elif i in [0, 4, 6, 10]:
                     self.enemy_state_list[index] = 1
                 elif i == 5:
                     self.enemy_state_list[index] = 2
                 else:
                     self.enemy_state_list[index] = 3
             else:
-                self.check_collision_end(enemy, index)
+                if self.check_collision_end(enemy, index):
+                    return False
+        return
+
+    def check_collision_end(self, enemy, index):
+        if end_rect.colliderect(enemy):
+            self.health -= self.enemy_type_list[index]
+            self.delete_enemy(index)
+            self.check_game_over()
+            return True
+        return
+
+    def delete_enemy(self, index):
+        del self.enemy_type_list[index]
+        del self.enemies_on_screen[index]
+        del self.enemy_state_list[index]
+        del self.enemies_list[index]
+        self.enemy_number -= 1
         return
 
     def text_display(self):
@@ -157,12 +175,7 @@ class tower_defense:
         display.blit(health_surface, health_rect)
         return
 
-    def check_collision_end(self, enemy, index):
-        if end_rect.colliderect(enemy):
-            self.health -= self.enemy_type_list[index]
-            self.enemy_type_list[index] = 0
-            self.check_game_over()
-        return
+
 
     def check_game_over(self):
         if self.health <= 0:
@@ -208,8 +221,16 @@ class tower_defense:
                         self.game_active = True
                         self.ready = True
                     if event.key == pygame.K_SPACE and not self.ready:
+                        self.enemies_list = []
+                        self.enemies_on_screen = []
+                        self.enemy_state_list = []
+                        self.enemy_number = 0
+                        self.enemy_type_list = []
                         self.wave += 1
                         self.create_enemies()
+                        self.health += 5
+                        self.game_active = True
+                        self.ready = True
                 if event.type == ENEMYSPAWN:
                     if len(self.enemies_on_screen) < len(self.enemies_list):
                         self.enemies_on_screen.append(self.enemies_list[self.enemy_number].copy())
@@ -217,7 +238,7 @@ class tower_defense:
 
             if self.game_active:
                 self.blit()
-                if all(elements == self.enemies_on_screen[0] for elements in self.enemies_on_screen):
+                if len(self.enemies_on_screen) <= 0:
                     self.draw_ready()
                     self.ready = False
             else:
