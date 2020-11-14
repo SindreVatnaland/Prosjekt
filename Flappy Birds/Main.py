@@ -13,6 +13,7 @@ clock = pygame.time.Clock()
 background_surface = pygame.transform.scale2x(pygame.image.load("assets/background-day.png").convert())
 floor_surface = pygame.transform.scale2x(pygame.image.load("assets/base.png").convert())
 pipe_surface = pygame.transform.scale2x(pygame.image.load("assets/pipe-green.png").convert_alpha())
+red_pipe_surface = pygame.transform.scale2x(pygame.image.load("assets/pipe-red.png").convert_alpha())
 
 
 bird_midflap = pygame.transform.scale2x(pygame.image.load("assets/yellowbird-midflap.png").convert_alpha())
@@ -31,13 +32,13 @@ die_sound = pygame.mixer.Sound("sound/sfx_die.wav")
 
 
 PIPESPAWN = pygame.USEREVENT
-pygame.time.set_timer(PIPESPAWN, 1500)
+pygame.time.set_timer(PIPESPAWN, 1550)
 
 BIRD_ANIMATION = pygame.USEREVENT + 1
 pygame.time.set_timer(BIRD_ANIMATION, 150)
 
 POINTSPAWN = pygame.USEREVENT + 2
-pygame.time.set_timer(POINTSPAWN, 1500)
+pygame.time.set_timer(POINTSPAWN, 1550)
 
 class Flappy_Bird:
     def __init__(self, width, height):
@@ -104,9 +105,8 @@ class Flappy_Bird:
 
 
 
-
     def create_pipes(self):
-        random_height = 700-random.randint(0, 15)*20
+        random_height = 700-random.randint(0, 30)*10
         bot_pipe = pipe_surface.get_rect(midtop=(650, random_height))
         top_pipe = pipe_surface.get_rect(midbottom=(650, random_height - 200))
         return bot_pipe, top_pipe
