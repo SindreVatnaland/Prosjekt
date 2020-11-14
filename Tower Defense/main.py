@@ -47,6 +47,11 @@ class tower_defense:
         self.ready_font = pygame.font.Font("04B_19.TTF", 40)
         self.wave_font = pygame.font.Font("04B_19.TTF", 60)
         self.health_font = pygame.font.Font("04B_19.TTF", 30)
+        self.high_score_font = pygame.font.Font("04B_19.TTF", 20)
+
+        high_score = open("high_score.txt", "r")
+        self.high_score = int(high_score.readlines()[0])
+        high_score.close()
 
         self.game_active = True
         self.ready = True
@@ -55,7 +60,7 @@ class tower_defense:
         self.height = height
 
         self.health = 10
-        self.speed = 8
+        self.speed = 5
         self.wave = 0
 
         self.enemies_list = []
@@ -149,12 +154,30 @@ class tower_defense:
             return True
         return
 
+    def check_click_collision(self, mouse_rect):
+        for index, enemy in enumerate(self.enemies_on_screen):
+            if mouse_rect.colliderect(enemy):
+                self.enemy_type_list[index] -= 1
+                if self.enemy_type_list[index] <= 0:
+                    self.delete_enemy(index)
+        return
+
     def delete_enemy(self, index):
         del self.enemy_type_list[index]
         del self.enemies_on_screen[index]
         del self.enemy_state_list[index]
         del self.enemies_list[index]
         self.enemy_number -= 1
+        return
+
+    def update_high_score(self):
+        high_score = open("high_score.txt", "w")
+        high_score.write(str(self.wave))
+        high_score.close()
+
+    def check_game_over(self):
+        if self.health <= 0:
+            self.game_active = False
         return
 
     def text_display(self):
@@ -166,6 +189,14 @@ class tower_defense:
         wave_rect.centery -= 3
         display.blit(wave_surface, wave_rect)
 
+        high_score_outline_surface = self.high_score_font.render(f"High score: {self.high_score}", True, (0, 0, 0)).convert_alpha()
+        high_score_surface = self.high_score_font.render(f"High score: {self.high_score}", True, (255, 255, 255)).convert_alpha()
+        high_score_rect = high_score_surface.get_rect(midtop=(self.width-(350/2), 15))
+        display.blit(high_score_outline_surface, high_score_rect)
+        high_score_rect.centerx -= 3
+        high_score_rect.centery -= 3
+        display.blit(high_score_surface, high_score_rect)
+
         health_outline_surface = self.health_font.render(f"Health: {self.health}", True, (0, 0, 0)).convert_alpha()
         health_surface = self.health_font.render(f"Health: {self.health}", True, (255, 255, 255)).convert_alpha()
         health_rect = health_surface.get_rect(midtop=(self.width-(350/2), 670))
@@ -173,13 +204,6 @@ class tower_defense:
         health_rect.centerx -= 3
         health_rect.centery -= 3
         display.blit(health_surface, health_rect)
-        return
-
-
-
-    def check_game_over(self):
-        if self.health <= 0:
-            self.game_active = False
         return
 
     def draw_ready(self):
@@ -204,10 +228,16 @@ class tower_defense:
 
     def play_game(self):
         while True:
+            mouse = pygame.mouse.get_pos()
+            mouse_rect = pygame.Rect(mouse[0], mouse[1], 50, 50)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.check_click_collision(mouse_rect)
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and not self.game_active:
                         self.health = 10
@@ -240,8 +270,13 @@ class tower_defense:
                 self.blit()
                 if len(self.enemies_on_screen) <= 0:
                     self.draw_ready()
+                    if self.wave > self.high_score:
+                        self.high_score = self.wave
                     self.ready = False
             else:
+                if self.wave == self.high_score:
+                    self.update_high_score()
+                    self.high_score = self.wave
                 self.draw_game_over()
 
             pygame.time.Clock().tick(40)
