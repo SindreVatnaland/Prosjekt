@@ -229,7 +229,7 @@ class tower_defense:
     def play_game(self):
         while True:
             mouse = pygame.mouse.get_pos()
-            mouse_rect = pygame.Rect(mouse[0], mouse[1], 50, 50)
+            mouse_rect = pygame.Rect(mouse[0]-15, mouse[1]-15, 30, 30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -268,7 +268,7 @@ class tower_defense:
 
             if self.game_active:
                 self.blit()
-                if len(self.enemies_on_screen) <= 0:
+                if len(self.enemies_list) <= 0:
                     self.draw_ready()
                     if self.wave > self.high_score:
                         self.high_score = self.wave
