@@ -15,7 +15,7 @@ background_rect = background_surface.get_rect(topleft=(0,0))
 rock_surface = pygame.image.load("assets/rock.jpg")
 rock_rect = rock_surface.get_rect(bottomright=(width, height))
 
-scale = (50,50)
+scale = (50, 50)
 green_enemy_surface = pygame.transform.scale(pygame.image.load("assets/green_square.png"), scale)
 yellow_enemy_surface = pygame.transform.scale(pygame.image.load("assets/yellow_square.png"), scale)
 blue_enemy_surface = pygame.transform.scale(pygame.image.load("assets/blue_square.png"), scale)
@@ -60,7 +60,7 @@ class tower_defense:
         self.height = height
 
         self.health = 10
-        self.speed = 5
+        self.speed = 4
         self.wave = 0
 
         self.enemies_list = []
@@ -160,6 +160,7 @@ class tower_defense:
                 self.enemy_type_list[index] -= 1
                 if self.enemy_type_list[index] <= 0:
                     self.delete_enemy(index)
+                    break
         return
 
     def delete_enemy(self, index):
@@ -259,6 +260,8 @@ class tower_defense:
                         self.wave += 1
                         self.create_enemies()
                         self.health += 5
+                        if self.wave > self.high_score:
+                            self.high_score = self.wave
                         self.game_active = True
                         self.ready = True
                 if event.type == ENEMYSPAWN:
@@ -270,11 +273,9 @@ class tower_defense:
                 self.blit()
                 if len(self.enemies_list) <= 0:
                     self.draw_ready()
-                    if self.wave > self.high_score:
-                        self.high_score = self.wave
                     self.ready = False
             else:
-                if self.wave == self.high_score:
+                if self.wave >= self.high_score:
                     self.update_high_score()
                     self.high_score = self.wave
                 self.draw_game_over()
