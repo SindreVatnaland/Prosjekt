@@ -30,6 +30,8 @@ blue_turret_surface = pygame.transform.scale(pygame.image.load("assets/blue_circ
 red_turret_surface = pygame.transform.scale(pygame.image.load("assets/red_circle.png"), scale_turret)
 turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 270))
 
+shade_surface = pygame.transform.scale(pygame.image.load("assets/shade.png"), (300, 300))
+shade_rect = shade_surface.get_rect(center=(width-350/2, 310))
 
 line1 = pygame.Rect(0, 75, 260, 50)
 line2 = pygame.Rect(210, 75, 50, 170)
@@ -67,8 +69,9 @@ pygame.time.set_timer(ENEMYSPAWN, 500)
 class tower_defense:
     def __init__(self, width, height):
         self.game_over_font = pygame.font.Font("04B_19.TTF", 120)
+        self.coins_font = pygame.font.Font("04B_19.TTF", 25)
         self.ready_font = pygame.font.Font("04B_19.TTF", 40)
-        self.turret_font = pygame.font.Font("04B_19.TTF", 40)
+        self.turret_font = pygame.font.Font("04B_19.TTF", 30)
         self.wave_font = pygame.font.Font("04B_19.TTF", 60)
         self.health_font = pygame.font.Font("04B_19.TTF", 30)
         self.high_score_font = pygame.font.Font("04B_19.TTF", 20)
@@ -76,6 +79,8 @@ class tower_defense:
         high_score = open("high_score.txt", "r")
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
+
+        self.coins = 0
 
         self.game_active = True
         self.ready = True
@@ -108,6 +113,7 @@ class tower_defense:
     def blit(self, mouse_pos):
         display.blit(rock_surface, rock_rect)
         display.blit(background_surface, background_rect)
+        display.blit(shade_surface, shade_rect)
         self.draw_items()
         self.text_display()
         self.draw_turrets()
@@ -288,7 +294,7 @@ class tower_defense:
 
         turret_outline_surface = self.turret_font.render(f"Turrets", True, (0, 0, 0)).convert_alpha()
         turret_surface = self.turret_font.render(f"Turrets", True, (255, 255, 255)).convert_alpha()
-        turret_rect = turret_surface.get_rect(midtop=(self.width-(350/2), 150))
+        turret_rect = turret_surface.get_rect(midtop=(self.width-(350/2), 180))
         display.blit(turret_outline_surface, turret_rect)
         turret_rect.centerx -= 3
         turret_rect.centery -= 3
@@ -301,6 +307,14 @@ class tower_defense:
         health_rect.centerx -= 3
         health_rect.centery -= 3
         display.blit(health_surface, health_rect)
+
+        coins_outline_surface = self.coins_font.render(f"Coins: {self.coins}", True, (0, 0, 0)).convert_alpha()
+        coins_surface = self.coins_font.render(f"Coins: {self.coins}", True, (255, 255, 255)).convert_alpha()
+        coins_rect = coins_surface.get_rect(midtop=(self.width-(350/2), 480))
+        display.blit(coins_outline_surface, coins_rect)
+        coins_rect.centerx -= 3
+        coins_rect.centery -= 3
+        display.blit(coins_surface, coins_rect)
         return
 
     def draw_ready(self):
