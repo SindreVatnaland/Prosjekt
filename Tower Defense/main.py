@@ -15,13 +15,36 @@ background_rect = background_surface.get_rect(topleft=(0,0))
 rock_surface = pygame.image.load("assets/rock.jpg")
 rock_rect = rock_surface.get_rect(bottomright=(width, height))
 
-scale = (50, 50)
-green_enemy_surface = pygame.transform.scale(pygame.image.load("assets/green_square.png"), scale)
-yellow_enemy_surface = pygame.transform.scale(pygame.image.load("assets/yellow_square.png"), scale)
-blue_enemy_surface = pygame.transform.scale(pygame.image.load("assets/blue_square.png"), scale)
-orange_enemy_surface = pygame.transform.scale(pygame.image.load("assets/orange_square.png"), scale)
-red_enemy_surface = pygame.transform.scale(pygame.image.load("assets/red_square.png"), scale)
+scale_enemy = (50, 50)
+green_enemy_surface = pygame.transform.scale(pygame.image.load("assets/green_square.png"), scale_enemy)
+yellow_enemy_surface = pygame.transform.scale(pygame.image.load("assets/yellow_square.png"), scale_enemy)
+blue_enemy_surface = pygame.transform.scale(pygame.image.load("assets/blue_square.png"), scale_enemy)
+orange_enemy_surface = pygame.transform.scale(pygame.image.load("assets/orange_square.png"), scale_enemy)
+red_enemy_surface = pygame.transform.scale(pygame.image.load("assets/red_square.png"), scale_enemy)
 enemy_rect = green_enemy_surface.get_rect(center=(-70, 100))
+
+scale_turret = (70, 70)
+green_turret_surface = pygame.transform.scale(pygame.image.load("assets/green_circle.png"), scale_turret)
+baige_turret_surface = pygame.transform.scale(pygame.image.load("assets/baige_circle.png"), scale_turret)
+blue_turret_surface = pygame.transform.scale(pygame.image.load("assets/blue_circle.png"), scale_turret)
+red_turret_surface = pygame.transform.scale(pygame.image.load("assets/red_circle.png"), scale_turret)
+turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 270))
+
+
+line1 = pygame.Rect(0, 75, 260, 50)
+line2 = pygame.Rect(210, 75, 50, 170)
+line3 = pygame.Rect(210, 195, 200, 50)
+line4 = pygame.Rect(355, 75, 50, 170)
+line5 = pygame.Rect(355, 75, 200, 50)
+line6 = pygame.Rect(520, 75, 50, 320)
+line7 = pygame.Rect(355, 330, 200, 50)
+line8 = pygame.Rect(355, 330, 50, 300)
+line9 = pygame.Rect(355, 590, 210, 50)
+line10 = pygame.Rect(525, 465, 50, 170)
+line11 = pygame.Rect(525, 470, 200, 50)
+line12 = pygame.Rect(675, 465, 50, 170)
+line13 = pygame.Rect(675, 590, 250, 50)
+lines_list = [line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13]
 
 turn_rect1 = green_enemy_surface.get_rect(center=(280, 100))
 turn_rect2 = green_enemy_surface.get_rect(center=(230, 268))
@@ -45,6 +68,7 @@ class tower_defense:
     def __init__(self, width, height):
         self.game_over_font = pygame.font.Font("04B_19.TTF", 120)
         self.ready_font = pygame.font.Font("04B_19.TTF", 40)
+        self.turret_font = pygame.font.Font("04B_19.TTF", 40)
         self.wave_font = pygame.font.Font("04B_19.TTF", 60)
         self.health_font = pygame.font.Font("04B_19.TTF", 30)
         self.high_score_font = pygame.font.Font("04B_19.TTF", 20)
@@ -69,18 +93,54 @@ class tower_defense:
         self.enemy_number = 0
         self.enemy_type_list = []
 
+        self.turret_list = []
+        self.turret_type_list = []
+        self.turret_range_rect = []
+
+        self.item_place_state = 0
+
         self.turn_collision_box_list = [turn_rect1, turn_rect2, turn_rect3, turn_rect4, turn_rect5, turn_rect6, turn_rect7,
                                turn_rect8, turn_rect9, turn_rect10, turn_rect11, turn_rect12]
 
 
         self.play_game()
 
-    def blit(self):
+    def blit(self, mouse_pos):
         display.blit(rock_surface, rock_rect)
         display.blit(background_surface, background_rect)
+        self.draw_items()
         self.text_display()
+        self.draw_turrets()
+        self.draw_item_hover(mouse_pos)
         self.draw_enemies()
         return
+
+    def place_turret(self, position):
+        if self.item_place_state != 0:
+            turret_rect = pygame.Rect(position[0]-37, position[1]-35, 70, 70)
+            for line in lines_list:
+                if line.colliderect(turret_rect):
+                    return
+            if position[0] < self.width-350-37:
+                for line_rect in lines_list:
+                    if turret_rect.colliderect(line_rect):
+                        return
+                for rect in self.turret_list:
+                    if not turret_rect.colliderect(rect):
+                        continue
+                    else:
+                        return
+                self.turret_list.append(turret_rect)
+                self.turret_range_rect.append((pygame.Rect(position[0]-37, position[1]-35, 150, 150)))
+                self.turret_type_list.append(1)
+                self.item_place_state = 0
+        return
+
+    def upgrade_turret(self):
+        pass
+
+    def turret_attack(self):
+        pass
 
     def create_enemies(self):
         for i in range(int(100*(self.wave*0.12))):
@@ -99,6 +159,28 @@ class tower_defense:
             else:
                 self.enemy_type_list.append(random.randint(3, 5))
         return
+
+    def draw_turrets(self):
+        for index, turret in enumerate(self.turret_list):
+            if self.turret_type_list[index] == 1:
+                display.blit(green_turret_surface, self.turret_list[index])
+            elif self.turret_type_list[index] == 2:
+                display.blit(baige_turret_surface, self.turret_list[index])
+            elif self.turret_type_list[index] == 3:
+                display.blit(blue_turret_surface, self.turret_list[index])
+            elif self.turret_type_list[index] == 4:
+                display.blit(red_turret_surface, self.turret_list[index])
+        return
+
+    def draw_items(self):
+        display.blit(green_turret_surface, turret_rect)
+
+    def draw_item_hover(self, mouse_pos):
+        if self.item_place_state == 1:
+            display.blit(green_turret_surface, pygame.Rect(mouse_pos[0]-37, mouse_pos[1]-35, 70, 70))
+            #Draw its hitbox
+        else:
+            return
 
     def draw_enemies(self):
         for i, enemy in enumerate(self.enemies_on_screen):
@@ -154,7 +236,13 @@ class tower_defense:
             return True
         return
 
-    def check_click_collision(self, mouse_rect):
+    def check_click_collision(self, mouse_rect, mouse_pos):
+        if self.item_place_state == 1:
+            self.place_turret(mouse_pos)
+            return
+        elif mouse_rect.colliderect(turret_rect):
+            self.item_place_state = 1
+            return
         for index, enemy in enumerate(self.enemies_on_screen):
             if mouse_rect.colliderect(enemy):
                 self.enemy_type_list[index] -= 1
@@ -198,6 +286,14 @@ class tower_defense:
         high_score_rect.centery -= 3
         display.blit(high_score_surface, high_score_rect)
 
+        turret_outline_surface = self.turret_font.render(f"Turrets", True, (0, 0, 0)).convert_alpha()
+        turret_surface = self.turret_font.render(f"Turrets", True, (255, 255, 255)).convert_alpha()
+        turret_rect = turret_surface.get_rect(midtop=(self.width-(350/2), 150))
+        display.blit(turret_outline_surface, turret_rect)
+        turret_rect.centerx -= 3
+        turret_rect.centery -= 3
+        display.blit(turret_surface, turret_rect)
+
         health_outline_surface = self.health_font.render(f"Health: {self.health}", True, (0, 0, 0)).convert_alpha()
         health_surface = self.health_font.render(f"Health: {self.health}", True, (255, 255, 255)).convert_alpha()
         health_rect = health_surface.get_rect(midtop=(self.width-(350/2), 670))
@@ -237,7 +333,9 @@ class tower_defense:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        self.check_click_collision(mouse_rect)
+                        self.check_click_collision(mouse_rect, mouse)
+                    if event.button == 3:
+                        self.item_place_state = 0
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and not self.game_active:
@@ -270,7 +368,7 @@ class tower_defense:
                         self.enemy_number += 1
 
             if self.game_active:
-                self.blit()
+                self.blit(mouse)
                 if len(self.enemies_list) <= 0:
                     self.draw_ready()
                     self.ready = False
