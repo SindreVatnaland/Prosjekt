@@ -1,6 +1,6 @@
 import pygame, random, sys
 
-pygame.mixer.pre_init(frequency = 44100, size = 32, channels = 1, buffer = 1024)
+pygame.mixer.pre_init(frequency=44100, size=32, channels=1, buffer=1024)
 pygame.init()
 
 width = 1280
@@ -29,16 +29,23 @@ baige_turret_surface = pygame.transform.scale(pygame.image.load("assets/baige_ci
 blue_turret_surface = pygame.transform.scale(pygame.image.load("assets/blue_circle.png"), scale_turret)
 red_turret_surface = pygame.transform.scale(pygame.image.load("assets/red_circle.png"), scale_turret)
 turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 270))
+turret2_rect = green_turret_surface.get_rect(center=(width-350*2/4, 270))
+turret3_rect = green_turret_surface.get_rect(center=(width-350*1/4, 270))
+turret4_rect = green_turret_surface.get_rect(center=(width-350*2/4, 350))
+turret_rect_list = [turret_rect, turret2_rect, turret3_rect, turret4_rect]
+turret_color_list = [green_turret_surface, red_turret_surface, blue_turret_surface, baige_turret_surface]
 
 shade_surface = pygame.transform.scale(pygame.image.load("assets/shade.png"), (300, 300))
 shade_rect = shade_surface.get_rect(center=(width-350/2, 310))
+shade_surface_small = pygame.transform.scale(pygame.image.load("assets/shade.png"), (300, 80))
 
+#Hitboxes for map
 line1 = pygame.Rect(0, 75, 260, 50)
 line2 = pygame.Rect(210, 75, 50, 170)
 line3 = pygame.Rect(210, 195, 200, 50)
 line4 = pygame.Rect(355, 75, 50, 170)
 line5 = pygame.Rect(355, 75, 200, 50)
-line6 = pygame.Rect(520, 75, 50, 320)
+line6 = pygame.Rect(520, 75, 50, 305)
 line7 = pygame.Rect(355, 330, 200, 50)
 line8 = pygame.Rect(355, 330, 50, 300)
 line9 = pygame.Rect(355, 590, 210, 50)
@@ -48,6 +55,7 @@ line12 = pygame.Rect(675, 465, 50, 170)
 line13 = pygame.Rect(675, 590, 250, 50)
 lines_list = [line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13]
 
+#Hitbox for setting direction to enemies
 turn_rect1 = green_enemy_surface.get_rect(center=(280, 100))
 turn_rect2 = green_enemy_surface.get_rect(center=(230, 268))
 turn_rect3 = green_enemy_surface.get_rect(center=(428, 220))
@@ -63,8 +71,20 @@ turn_rect12 = green_enemy_surface.get_rect(center=(700, 660))
 
 end_rect = green_enemy_surface.get_rect(center=(960, 610))
 
-ENEMYSPAWN = pygame.USEREVENT
-pygame.time.set_timer(ENEMYSPAWN, 500)
+ENEMYSPAWN = pygame.USEREVENT + 0
+pygame.time.set_timer(ENEMYSPAWN, 350)
+
+TURRET1_ATTACK = pygame.USEREVENT + 1
+pygame.time.set_timer(TURRET1_ATTACK, 2500)
+
+TURRET2_ATTACK = pygame.USEREVENT + 2
+pygame.time.set_timer(TURRET2_ATTACK, 1500)
+
+TURRET3_ATTACK = pygame.USEREVENT + 3
+pygame.time.set_timer(TURRET3_ATTACK, 3000)
+
+# TURRET4_ATTACK = pygame.USEREVENT + 4
+# pygame.time.set_timer(ENEMYSPAWN, 500)
 
 class tower_defense:
     def __init__(self, width, height):
@@ -75,12 +95,13 @@ class tower_defense:
         self.wave_font = pygame.font.Font("04B_19.TTF", 60)
         self.health_font = pygame.font.Font("04B_19.TTF", 30)
         self.high_score_font = pygame.font.Font("04B_19.TTF", 20)
+        self.info_font = pygame.font.Font("04B_19.TTF", 20)
 
         high_score = open("high_score.txt", "r")
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
 
-        self.coins = 0
+        self.coins = 150
 
         self.game_active = True
         self.ready = True
@@ -89,8 +110,9 @@ class tower_defense:
         self.height = height
 
         self.health = 10
-        self.speed = 4
+        self.speed = 3.5
         self.wave = 0
+        self.click_damage = 1
 
         self.enemies_list = []
         self.enemies_on_screen = []
@@ -101,16 +123,22 @@ class tower_defense:
         self.turret_list = []
         self.turret_type_list = []
         self.turret_range_rect = []
+        self.turret_attack_states = []
+
+        self.turret1_prize = 100
+        self.turret2_prize = 250
+        self.turret3_prize = 500
+        self.turret4_prize = 750
 
         self.item_place_state = 0
 
-        self.turn_collision_box_list = [turn_rect1, turn_rect2, turn_rect3, turn_rect4, turn_rect5, turn_rect6, turn_rect7,
-                               turn_rect8, turn_rect9, turn_rect10, turn_rect11, turn_rect12]
+        self.turn_collision_box_list = [turn_rect1, turn_rect2, turn_rect3, turn_rect4, turn_rect5, turn_rect6,
+                                        turn_rect7, turn_rect8, turn_rect9, turn_rect10, turn_rect11, turn_rect12]
 
 
         self.play_game()
 
-    def blit(self, mouse_pos):
+    def blit(self, mouse_pos, mouse_rect):
         display.blit(rock_surface, rock_rect)
         display.blit(background_surface, background_rect)
         display.blit(shade_surface, shade_rect)
@@ -118,7 +146,9 @@ class tower_defense:
         self.text_display()
         self.draw_turrets()
         self.draw_item_hover(mouse_pos)
+        self.draw_info_hover(mouse_rect, mouse_pos)
         self.draw_enemies()
+        #pygame.draw.rect(display, (255, 0, 0), line10)
         return
 
     def place_turret(self, position):
@@ -137,16 +167,59 @@ class tower_defense:
                     else:
                         return
                 self.turret_list.append(turret_rect)
-                self.turret_range_rect.append((pygame.Rect(position[0]-37, position[1]-35, 150, 150)))
-                self.turret_type_list.append(1)
+                if self.item_place_state == 1 or self.item_place_state == 2:
+                    self.turret_range_rect.append((pygame.Rect(position[0]-37-self.item_place_state*75,
+                                                               position[1]-35-self.item_place_state*75,
+                                                               70+2*self.item_place_state*75,
+                                                               70+2*self.item_place_state*75)))
+                elif self.item_place_state == 3:
+                    self.turret_range_rect.append((pygame.Rect(position[0]-37-1*75, position[1]-35-1*75, 70+2*1*75, 70+2*1*75)))
+                self.turret_type_list.append(self.item_place_state)
+                self.turret_attack_states.append(0)
                 self.item_place_state = 0
         return
 
-    def upgrade_turret(self):
-        pass
+    #Unused
+    def upgrade_click_damage(self):
+        if self.click_damage < 3:
+            self.click_damage += 1
+        else:
+            return
 
-    def turret_attack(self):
-        pass
+
+    def turret1_attack(self):
+        for turret_index, turret in enumerate(self.turret_list):
+            if self.turret_type_list[turret_index] == 1:
+                for enemy_index, enemy in enumerate(self.enemies_on_screen):
+                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                        self.turret_attack_states[turret_index] = 1
+                        self.enemy_type_list[enemy_index] -= 1
+                        if self.enemy_type_list[enemy_index] <= 0:
+                            self.delete_enemy(enemy_index)
+                            break
+
+
+    def turret2_attack(self):
+        for turret_index, turret in enumerate(self.turret_list):
+            if self.turret_type_list[turret_index] == 2:
+                for enemy_index, enemy in enumerate(self.enemies_on_screen):
+                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                        self.turret_attack_states[turret_index] = 1
+                        self.enemy_type_list[enemy_index] -= 2
+                        if self.enemy_type_list[enemy_index] <= 0:
+                            self.delete_enemy(enemy_index)
+                            break
+
+    def turret3_attack(self):
+        for turret_index, turret in enumerate(self.turret_list):
+            if self.turret_type_list[turret_index] == 3:
+                for enemy_index, enemy in enumerate(self.enemies_on_screen):
+                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                        self.turret_attack_states[turret_index] = 1
+                        self.enemy_type_list[enemy_index] -= 1
+                        if self.enemy_type_list[enemy_index] <= 0:
+                            self.delete_enemy(enemy_index)
+
 
     def create_enemies(self):
         for i in range(int(100*(self.wave*0.12))):
@@ -171,20 +244,43 @@ class tower_defense:
             if self.turret_type_list[index] == 1:
                 display.blit(green_turret_surface, self.turret_list[index])
             elif self.turret_type_list[index] == 2:
-                display.blit(baige_turret_surface, self.turret_list[index])
+                display.blit(red_turret_surface, self.turret_list[index])
             elif self.turret_type_list[index] == 3:
                 display.blit(blue_turret_surface, self.turret_list[index])
             elif self.turret_type_list[index] == 4:
-                display.blit(red_turret_surface, self.turret_list[index])
+                display.blit(baige_turret_surface, self.turret_list[index])
+        for index, turret in enumerate(self.turret_range_rect):
+            for enemy in self.enemies_on_screen:
+                if turret.colliderect(enemy):
+                    if self.turret_attack_states[index] == 1:
+                        pygame.draw.rect(display, (255, 0, 0), turret, 2)
+                        pygame.draw.rect(display, (255, 0, 0), self.turret_list[index], 2)
+                        self.turret_attack_states[index] = 0
+                    else:
+                        pygame.draw.rect(display, (0, 0, 0), turret, 2)
+                        pygame.draw.rect(display, (0, 0, 0), self.turret_list[index], 2)
+                    break
+
         return
 
     def draw_items(self):
         display.blit(green_turret_surface, turret_rect)
+        display.blit(red_turret_surface, turret2_rect)
+        display.blit(blue_turret_surface, turret3_rect)
+        display.blit(baige_turret_surface, turret4_rect)
+        return
 
     def draw_item_hover(self, mouse_pos):
-        if self.item_place_state == 1:
-            display.blit(green_turret_surface, pygame.Rect(mouse_pos[0]-37, mouse_pos[1]-35, 70, 70))
-            #Draw its hitbox
+        if self.item_place_state != 0:
+            display.blit(turret_color_list[self.item_place_state-1], pygame.Rect(mouse_pos[0]-37, mouse_pos[1]-35, 70, 70))
+            pygame.draw.rect(display, (0, 0, 0), (mouse_pos[0]-37, mouse_pos[1]-35, 70, 70), 2)
+            if self.item_place_state == 1 or self.item_place_state == 2:
+                pygame.draw.rect(display, (255, 0, 0), (mouse_pos[0]-37-self.item_place_state*75,
+                                                        mouse_pos[1]-35-self.item_place_state*75,
+                                                        70+2*self.item_place_state*75,
+                                                        70+2*self.item_place_state*75), 2)
+            elif self.item_place_state == 3:
+                pygame.draw.rect(display, (255, 0, 0), (mouse_pos[0]-37-1*75, mouse_pos[1]-35-1*75, 70+2*1*75, 70+2*1*75), 2)
         else:
             return
 
@@ -243,18 +339,47 @@ class tower_defense:
         return
 
     def check_click_collision(self, mouse_rect, mouse_pos):
-        if self.item_place_state == 1:
+        if self.item_place_state != 0:
             self.place_turret(mouse_pos)
             return
         elif mouse_rect.colliderect(turret_rect):
-            self.item_place_state = 1
+            if self.coins >= self.turret1_prize and self.coins > 0:
+                self.coins -= self.turret1_prize
+                self.item_place_state = 1
             return
+        elif mouse_rect.colliderect(turret2_rect):
+            if self.coins >= self.turret2_prize and self.coins > 0:
+                self.coins -= self.turret2_prize
+                self.item_place_state = 2
+            return
+        elif mouse_rect.colliderect(turret3_rect):
+            if self.coins >= self.turret3_prize and self.coins > 0:
+                self.coins -= self.turret3_prize
+                self.item_place_state = 3
+            return
+        elif mouse_rect.colliderect(turret4_rect): #Unused
+            if self.coins >= self.turret4_prize and self.coins > 0:
+                self.coins -= self.turret4_prize
+                self.item_place_state = 4
+            return
+        for index, turret in enumerate(self.turret_list):
+            if mouse_rect.colliderect(turret):
+                self.item_place_state = self.turret_type_list[index]
+                self.delete_turret(index)
+                break
+
         for index, enemy in enumerate(self.enemies_on_screen):
             if mouse_rect.colliderect(enemy):
-                self.enemy_type_list[index] -= 1
+                self.enemy_type_list[index] -= self.click_damage
                 if self.enemy_type_list[index] <= 0:
                     self.delete_enemy(index)
                     break
+        return
+
+    def delete_turret(self, index):
+        del self.turret_list[index]
+        del self.turret_type_list[index]
+        del self.turret_range_rect[index]
         return
 
     def delete_enemy(self, index):
@@ -263,6 +388,7 @@ class tower_defense:
         del self.enemy_state_list[index]
         del self.enemies_list[index]
         self.enemy_number -= 1
+        self.coins += 1
         return
 
     def update_high_score(self):
@@ -317,6 +443,81 @@ class tower_defense:
         display.blit(coins_surface, coins_rect)
         return
 
+    def draw_info_hover(self, mouse_rect, mouse_pos):
+        for index, item in enumerate(turret_rect_list):
+            if item.colliderect(mouse_rect) and mouse_pos[0] > self.width-350:
+                if index == 0:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Prize: {self.turret1_prize}", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Prize: {self.turret1_prize}", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 2500", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 2500", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Attack: One enemy at once", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Attack: One enemy at once", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                elif index == 1:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Prize: {self.turret2_prize}", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Prize: {self.turret2_prize}", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 1500", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 1500", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Attack: One enemy at once", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Attack: One enemy at once", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                elif index == 2:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Prize: {self.turret3_prize}", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Prize: {self.turret3_prize}", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 3000", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 3000", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Attack: Multiple enemies at once", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Attack: Multiple enemies at once", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+
+        return
+
     def draw_ready(self):
         ready_outline_surface = self.ready_font.render(f"Press 'Space' when ready", True, (0, 0, 0)).convert_alpha()
         ready_surface = self.ready_font.render(f"Press 'Space' when ready", True, (255, 255, 255)).convert_alpha()
@@ -325,6 +526,30 @@ class tower_defense:
         ready_rect.centerx -= 3
         ready_rect.centery -= 3
         display.blit(ready_surface, ready_rect)
+
+        tip_outline_surface = self.info_font.render(f"Tips:", True, (0, 0, 0)).convert_alpha()
+        tip_surface = self.info_font.render(f"Tips:", True, (255, 255, 255)).convert_alpha()
+        tip_rect = tip_surface.get_rect(topleft=(20, 650))
+        display.blit(tip_outline_surface, tip_rect)
+        tip_rect.centerx -= 3
+        tip_rect.centery -= 3
+        display.blit(tip_surface, tip_rect)
+
+        tip1_outline_surface = self.info_font.render(f"Click on enemies to deal damage", True, (0, 0, 0)).convert_alpha()
+        tip1_surface = self.info_font.render(f"Click on enemies to deal damage", True, (255, 255, 255)).convert_alpha()
+        tip1_rect = tip1_surface.get_rect(topleft=(20, 670))
+        display.blit(tip1_outline_surface, tip1_rect)
+        tip1_rect.centerx -= 3
+        tip1_rect.centery -= 3
+        display.blit(tip1_surface, tip1_rect)
+
+        tip2_outline_surface = self.info_font.render(f"Sell items by select and right click", True, (0, 0, 0)).convert_alpha()
+        tip2_surface = self.info_font.render(f"Sell items by select and right click", True, (255, 255, 255)).convert_alpha()
+        tip2_rect = tip2_surface.get_rect(topleft=(20, 690))
+        display.blit(tip2_outline_surface, tip2_rect)
+        tip2_rect.centerx -= 3
+        tip2_rect.centery -= 3
+        display.blit(tip2_surface, tip2_rect)
         return
 
     def draw_game_over(self):
@@ -340,7 +565,7 @@ class tower_defense:
     def play_game(self):
         while True:
             mouse = pygame.mouse.get_pos()
-            mouse_rect = pygame.Rect(mouse[0]-15, mouse[1]-15, 30, 30)
+            mouse_rect = pygame.Rect(mouse[0]-3, mouse[1]-3, 5, 5)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -348,7 +573,13 @@ class tower_defense:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.check_click_collision(mouse_rect, mouse)
-                    if event.button == 3:
+                    if event.button == 3 and self.item_place_state != 0:
+                        if self.item_place_state == 1:
+                            self.coins += 100
+                        elif self.item_place_state == 2:
+                            self.coins += 200
+                        elif self.item_place_state == 3:
+                            self.coins += 500
                         self.item_place_state = 0
 
                 if event.type == pygame.KEYDOWN:
@@ -361,15 +592,25 @@ class tower_defense:
                         self.enemy_state_list = []
                         self.enemy_number = 0
                         self.enemy_type_list = []
+                        self.turret_list = []
+                        self.turret_type_list = []
+                        self.turret_range_rect = []
+                        self.turret_attack_states = []
                         self.game_active = True
                         self.ready = True
                     if event.key == pygame.K_SPACE and not self.ready:
+                        self.coins += int((self.wave * 100)**0.4+10)
+                        self.wave += 1
+                        if self.speed < 12:
+                            self.speed = 3 + self.wave**0.6
+                            if self.speed >= 10:
+                                self.speed = 10
+                        print(self.speed)
                         self.enemies_list = []
                         self.enemies_on_screen = []
                         self.enemy_state_list = []
                         self.enemy_number = 0
                         self.enemy_type_list = []
-                        self.wave += 1
                         self.create_enemies()
                         self.health += 5
                         if self.wave > self.high_score:
@@ -380,9 +621,18 @@ class tower_defense:
                     if len(self.enemies_on_screen) < len(self.enemies_list):
                         self.enemies_on_screen.append(self.enemies_list[self.enemy_number].copy())
                         self.enemy_number += 1
+                if event.type == TURRET1_ATTACK:
+                    self.turret_attack_state = 1
+                    self.turret1_attack()
+                if event.type == TURRET2_ATTACK:
+                    self.turret_attack_state = 1
+                    self.turret2_attack()
+                if event.type == TURRET3_ATTACK:
+                    self.turret_attack_state = 1
+                    self.turret3_attack()
 
             if self.game_active:
-                self.blit(mouse)
+                self.blit(mouse, mouse_rect)
                 if len(self.enemies_list) <= 0:
                     self.draw_ready()
                     self.ready = False
@@ -391,7 +641,6 @@ class tower_defense:
                     self.update_high_score()
                     self.high_score = self.wave
                 self.draw_game_over()
-
             pygame.time.Clock().tick(40)
             pygame.display.update()
 
