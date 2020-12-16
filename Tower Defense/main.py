@@ -24,6 +24,10 @@ red_enemy_surface = pygame.transform.scale(pygame.image.load("assets/red_square.
 enemy_rect = green_enemy_surface.get_rect(center=(-70, 100))
 
 scale_turret = (70, 70)
+
+mouse_upgrade_surface = pygame.transform.scale(pygame.image.load("assets/mouse.png"), (50, 60))
+mouse_upgrade_rect = mouse_upgrade_surface.get_rect(center=(width - 350 * 1.7 / 5, 350))
+
 green_turret_surface = pygame.transform.scale(pygame.image.load("assets/green_circle.png"), scale_turret)
 baige_turret_surface = pygame.transform.scale(pygame.image.load("assets/baige_circle.png"), scale_turret)
 blue_turret_surface = pygame.transform.scale(pygame.image.load("assets/blue_circle.png"), scale_turret)
@@ -31,9 +35,9 @@ red_turret_surface = pygame.transform.scale(pygame.image.load("assets/red_circle
 turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 270))
 turret2_rect = green_turret_surface.get_rect(center=(width-350*2/4, 270))
 turret3_rect = green_turret_surface.get_rect(center=(width-350*1/4, 270))
-turret4_rect = green_turret_surface.get_rect(center=(width-350*2/4, 350))
-turret_rect_list = [turret_rect, turret2_rect, turret3_rect, turret4_rect]
-turret_color_list = [green_turret_surface, red_turret_surface, blue_turret_surface, baige_turret_surface]
+nuke_rect = green_turret_surface.get_rect(center=(width-350*3/5, 350))
+turret_rect_list = [turret_rect, turret2_rect, turret3_rect, nuke_rect, mouse_upgrade_rect]
+turret_color_list = [green_turret_surface, red_turret_surface, blue_turret_surface]
 
 shade_surface = pygame.transform.scale(pygame.image.load("assets/shade.png"), (300, 300))
 shade_rect = shade_surface.get_rect(center=(width-350/2, 310))
@@ -83,8 +87,6 @@ pygame.time.set_timer(TURRET2_ATTACK, 1500)
 TURRET3_ATTACK = pygame.USEREVENT + 3
 pygame.time.set_timer(TURRET3_ATTACK, 3000)
 
-# TURRET4_ATTACK = pygame.USEREVENT + 4
-# pygame.time.set_timer(ENEMYSPAWN, 500)
 
 class tower_defense:
     def __init__(self, width, height):
@@ -101,7 +103,7 @@ class tower_defense:
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
 
-        self.coins = 150
+        self.coins = 1500
 
         self.game_active = True
         self.ready = True
@@ -128,7 +130,8 @@ class tower_defense:
         self.turret1_prize = 100
         self.turret2_prize = 250
         self.turret3_prize = 500
-        self.turret4_prize = 750
+        self.nuke_prize = 750
+        self.mouse_prize = 500
 
         self.item_place_state = 0
 
@@ -179,13 +182,18 @@ class tower_defense:
                 self.item_place_state = 0
         return
 
-    #Unused
     def upgrade_click_damage(self):
         if self.click_damage < 3:
             self.click_damage += 1
         else:
+            self.coins += 1500
             return
 
+    def nuke(self):
+        for index, enemy in enumerate(self.enemies_on_screen):
+            self.enemy_type_list[index] -= 3
+            if self.enemy_type_list[index] <= 0:
+                self.delete_enemy(index)
 
     def turret1_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
@@ -219,6 +227,7 @@ class tower_defense:
                         self.enemy_type_list[enemy_index] -= 1
                         if self.enemy_type_list[enemy_index] <= 0:
                             self.delete_enemy(enemy_index)
+
 
 
     def create_enemies(self):
@@ -267,7 +276,8 @@ class tower_defense:
         display.blit(green_turret_surface, turret_rect)
         display.blit(red_turret_surface, turret2_rect)
         display.blit(blue_turret_surface, turret3_rect)
-        display.blit(baige_turret_surface, turret4_rect)
+        display.blit(baige_turret_surface, nuke_rect)
+        display.blit(mouse_upgrade_surface, mouse_upgrade_rect)
         return
 
     def draw_item_hover(self, mouse_pos):
@@ -357,17 +367,25 @@ class tower_defense:
                 self.coins -= self.turret3_prize
                 self.item_place_state = 3
             return
-        elif mouse_rect.colliderect(turret4_rect): #Unused
-            if self.coins >= self.turret4_prize and self.coins > 0:
-                self.coins -= self.turret4_prize
-                self.item_place_state = 4
+        elif mouse_rect.colliderect(nuke_rect):
+            if self.coins >= self.nuke_prize and self.coins > 0:
+                self.coins -= self.nuke_prize
+                self.nuke()
+                self.item_place_state = 0
             return
+        elif mouse_rect.colliderect(mouse_upgrade_rect):
+            if self.coins >= self.mouse_prize and self.coins > 0:
+                self.coins -= self.mouse_prize
+                self.mouse_prize += 1000
+                self.item_place_state = 0
+                self.upgrade_click_damage()
+            return
+
         for index, turret in enumerate(self.turret_list):
             if mouse_rect.colliderect(turret):
                 self.item_place_state = self.turret_type_list[index]
                 self.delete_turret(index)
                 break
-
         for index, enemy in enumerate(self.enemies_on_screen):
             if mouse_rect.colliderect(enemy):
                 self.enemy_type_list[index] -= self.click_damage
@@ -510,6 +528,52 @@ class tower_defense:
                     display.blit(prize_surface, prize_rect)
                     prize_outline_surface = self.info_font.render(f"Attack: Multiple enemies at once", True, (0, 0, 0)).convert_alpha()
                     prize_surface = self.info_font.render(f"Attack: Multiple enemies at once", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                elif index == 3:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Prize: {self.nuke_prize}", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Prize: {self.nuke_prize}", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 0", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 0", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Deals 3 damage to every enemy", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Deals 3 damage to every enemy", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                elif index == 4:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Prize: {self.mouse_prize}", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Prize: {self.mouse_prize}", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Upgrade mouse damage by 1", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Upgrade mouse damage by 1", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+                    prize_outline_surface = self.info_font.render(f"Max damage: 3", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Max damage: 3", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
