@@ -79,13 +79,16 @@ ENEMYSPAWN = pygame.USEREVENT + 0
 pygame.time.set_timer(ENEMYSPAWN, 350)
 
 TURRET1_ATTACK = pygame.USEREVENT + 1
-pygame.time.set_timer(TURRET1_ATTACK, 2500)
+pygame.time.set_timer(TURRET1_ATTACK, 1500)
 
 TURRET2_ATTACK = pygame.USEREVENT + 2
-pygame.time.set_timer(TURRET2_ATTACK, 1500)
+pygame.time.set_timer(TURRET2_ATTACK, 1000)
 
 TURRET3_ATTACK = pygame.USEREVENT + 3
-pygame.time.set_timer(TURRET3_ATTACK, 3000)
+pygame.time.set_timer(TURRET3_ATTACK, 3500)
+
+MOUSE_COOLDOWN = pygame.USEREVENT + 4
+pygame.time.set_timer(MOUSE_COOLDOWN, 250)
 
 
 class tower_defense:
@@ -103,7 +106,7 @@ class tower_defense:
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
 
-        self.coins = 1500
+        self.coins = 150
 
         self.game_active = True
         self.ready = True
@@ -115,6 +118,7 @@ class tower_defense:
         self.speed = 3.5
         self.wave = 0
         self.click_damage = 1
+        self.mouse_state = 1
 
         self.enemies_list = []
         self.enemies_on_screen = []
@@ -129,9 +133,9 @@ class tower_defense:
 
         self.turret1_prize = 100
         self.turret2_prize = 250
-        self.turret3_prize = 500
+        self.turret3_prize = 1000
         self.nuke_prize = 750
-        self.mouse_prize = 500
+        self.mouse_prize = 1000
 
         self.item_place_state = 0
 
@@ -184,8 +188,6 @@ class tower_defense:
     def upgrade_click_damage(self):
         if self.click_damage < 3:
             self.click_damage += 1
-        else:
-            self.coins += 1500
             return
 
     def nuke(self):
@@ -222,21 +224,54 @@ class tower_defense:
 
 
     def create_enemies(self):
-        for i in range(int(100*(self.wave*0.12))):
-            self.enemies_list.append(enemy_rect)
-            self.enemy_state_list.append(0)
-            if i <= 10:
-                self.enemy_type_list.append(1)
-            elif i < 30:
-                self.enemy_type_list.append(random.randint(1, 2))
-            elif i < 50:
-                self.enemy_type_list.append(random.randint(1, 3))
-            elif i < 70:
-                self.enemy_type_list.append(random.randint(2, 3))
-            elif i < 100:
-                self.enemy_type_list.append(random.randint(3, 4))
-            else:
-                self.enemy_type_list.append(random.randint(3, 5))
+        if self.wave < 10:
+            for i in range(self.wave*12):
+                self.enemies_list.append(enemy_rect)
+                self.enemy_state_list.append(0)
+                if i <= 10:
+                    self.enemy_type_list.append(1)
+                elif i < 30:
+                    self.enemy_type_list.append(random.randint(1, 2))
+                elif i < 50:
+                    self.enemy_type_list.append(random.randint(1, 3))
+                elif i < 70:
+                    self.enemy_type_list.append(random.randint(2, 3))
+                elif i < 100:
+                    self.enemy_type_list.append(random.randint(3, 4))
+                else:
+                    self.enemy_type_list.append(random.randint(3, 5))
+        elif self.wave < 20:
+            for i in range(self.wave*10):
+                self.enemies_list.append(enemy_rect)
+                self.enemy_state_list.append(0)
+                if i <= 10:
+                    self.enemy_type_list.append(random.randint(1, 2))
+                elif i < 30:
+                    self.enemy_type_list.append(random.randint(1, 3))
+                elif i < 50:
+                    self.enemy_type_list.append(random.randint(2, 3))
+                elif i < 70:
+                    self.enemy_type_list.append(random.randint(2, 4))
+                elif i < 100:
+                    self.enemy_type_list.append(random.randint(3, 5))
+                else:
+                    self.enemy_type_list.append(random.randint(4, 5))
+        else:
+            for i in range(self.wave*11):
+                self.enemies_list.append(enemy_rect)
+                self.enemy_state_list.append(0)
+                if i <= 10:
+                    self.enemy_type_list.append(2)
+                elif i < 30:
+                    self.enemy_type_list.append(random.randint(2, 3))
+                elif i < 50:
+                    self.enemy_type_list.append(random.randint(2, 4))
+                elif i < 70:
+                    self.enemy_type_list.append(random.randint(3, 4))
+                elif i < 100:
+                    self.enemy_type_list.append(random.randint(4, 5))
+                else:
+                    self.enemy_type_list.append(5)
         return
 
     def draw_turrets(self):
@@ -346,16 +381,19 @@ class tower_defense:
         elif mouse_rect.colliderect(turret_rect):
             if self.coins >= self.turret1_prize and self.coins > 0:
                 self.coins -= self.turret1_prize
+                self.turret1_prize += 10
                 self.item_place_state = 1
             return
         elif mouse_rect.colliderect(turret2_rect):
             if self.coins >= self.turret2_prize and self.coins > 0:
                 self.coins -= self.turret2_prize
+                self.turret2_prize += 25
                 self.item_place_state = 2
             return
         elif mouse_rect.colliderect(turret3_rect):
             if self.coins >= self.turret3_prize and self.coins > 0:
                 self.coins -= self.turret3_prize
+                self.turret3_prize += 100
                 self.item_place_state = 3
             return
         elif mouse_rect.colliderect(nuke_rect) and self.ready:
@@ -366,10 +404,11 @@ class tower_defense:
             return
         elif mouse_rect.colliderect(mouse_upgrade_rect):
             if self.coins >= self.mouse_prize and self.coins > 0:
-                self.coins -= self.mouse_prize
-                self.mouse_prize += 1000
                 self.item_place_state = 0
-                self.upgrade_click_damage()
+                if self.click_damage < 3:
+                    self.coins -= self.mouse_prize
+                    self.mouse_prize += 2000
+                    self.upgrade_click_damage()
             return
 
         for index, turret in enumerate(self.turret_list):
@@ -377,15 +416,24 @@ class tower_defense:
                 self.item_place_state = self.turret_type_list[index]
                 self.delete_turret(index)
                 break
-        for index, enemy in enumerate(self.enemies_on_screen):
-            if mouse_rect.colliderect(enemy):
-                self.enemy_type_list[index] -= self.click_damage
+        if self.mouse_state == 1:
+            for index, enemy in enumerate(self.enemies_on_screen):
+                if mouse_rect.colliderect(enemy):
+                    self.enemy_type_list[index] -= self.click_damage
+                    self.mouse_state = 0
+                    break
         return
 
     def delete_turret(self, index):
         del self.turret_list[index]
         del self.turret_type_list[index]
         del self.turret_range_rect[index]
+        if index == 0:
+            self.turret1_prize -= 10
+        elif index == 1:
+            self.turret2_prize -= 25
+        elif index == 2:
+            self.turret3_prize -= 100
         return
 
     def delete_enemy(self):
@@ -399,7 +447,7 @@ class tower_defense:
             del self.enemy_state_list[index]
             del self.enemies_list[index]
             self.enemy_number -= 1
-            self.coins += 1
+            self.coins += 3
         return
 
     def update_high_score(self):
@@ -474,8 +522,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Cooldown: 2500", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Cooldown: 2500", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 1.5s", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 1.5s", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -497,8 +545,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Cooldown: 1500", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Cooldown: 1500", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 1.0s", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 1.0s", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -520,8 +568,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Cooldown: 3000", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Cooldown: 3000", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 3.5s", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 3.5s", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -543,8 +591,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Cooldown: 0", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Cooldown: 0", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Cooldown: 0.0s", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Cooldown: 0.0s", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+30))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -557,7 +605,7 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                elif index == 4:
+                elif index == 4 and self.click_damage < 3:
                     display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
                     prize_outline_surface = self.info_font.render(f"Prize: {self.mouse_prize}", True, (0, 0, 0)).convert_alpha()
                     prize_surface = self.info_font.render(f"Prize: {self.mouse_prize}", True, (255, 255, 255)).convert_alpha()
@@ -580,6 +628,16 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
+                elif index == 4 and self.click_damage >= 3:
+                    display.blit(shade_surface_small, shade_surface_small.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1])))
+                    prize_outline_surface = self.info_font.render(f"Sold out", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Sold out", True, (255, 255, 255)).convert_alpha()
+                    prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+5))
+                    display.blit(prize_outline_surface, prize_rect)
+                    prize_rect.centerx -= 3
+                    prize_rect.centery -= 3
+                    display.blit(prize_surface, prize_rect)
+
         return
 
     def draw_ready(self):
@@ -685,6 +743,9 @@ class tower_defense:
                     if len(self.enemies_on_screen) < len(self.enemies_list):
                         self.enemies_on_screen.append(self.enemies_list[self.enemy_number].copy())
                         self.enemy_number += 1
+
+                if event.type == MOUSE_COOLDOWN:
+                    self.mouse_state = 1
                 if event.type == TURRET1_ATTACK:
                     self.turret_attack_state = 1
                     self.turret1_attack()
