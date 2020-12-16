@@ -26,16 +26,16 @@ enemy_rect = green_enemy_surface.get_rect(center=(-70, 100))
 scale_turret = (70, 70)
 
 mouse_upgrade_surface = pygame.transform.scale(pygame.image.load("assets/mouse.png"), (50, 60))
-mouse_upgrade_rect = mouse_upgrade_surface.get_rect(center=(width - 350 * 1.7 / 5, 350))
+mouse_upgrade_rect = mouse_upgrade_surface.get_rect(center=(width - 350 * 1.7 / 5, 390))
 
 green_turret_surface = pygame.transform.scale(pygame.image.load("assets/green_circle.png"), scale_turret)
-baige_turret_surface = pygame.transform.scale(pygame.image.load("assets/baige_circle.png"), scale_turret)
+nuke_item_surface = pygame.transform.scale(pygame.image.load("assets/nuke.png"), scale_turret)
 blue_turret_surface = pygame.transform.scale(pygame.image.load("assets/blue_circle.png"), scale_turret)
 red_turret_surface = pygame.transform.scale(pygame.image.load("assets/red_circle.png"), scale_turret)
-turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 270))
-turret2_rect = green_turret_surface.get_rect(center=(width-350*2/4, 270))
-turret3_rect = green_turret_surface.get_rect(center=(width-350*1/4, 270))
-nuke_rect = green_turret_surface.get_rect(center=(width-350*3/5, 350))
+turret_rect = green_turret_surface.get_rect(center=(width-350*3/4, 260))
+turret2_rect = green_turret_surface.get_rect(center=(width-350*2/4, 260))
+turret3_rect = green_turret_surface.get_rect(center=(width-350*1/4, 260))
+nuke_rect = green_turret_surface.get_rect(center=(width-350*3/5, 390))
 turret_rect_list = [turret_rect, turret2_rect, turret3_rect, nuke_rect, mouse_upgrade_rect]
 turret_color_list = [green_turret_surface, red_turret_surface, blue_turret_surface]
 
@@ -151,7 +151,6 @@ class tower_defense:
         self.draw_item_hover(mouse_pos)
         self.draw_info_hover(mouse_rect, mouse_pos)
         self.draw_enemies()
-        #pygame.draw.rect(display, (255, 0, 0), line10)
         return
 
     def place_turret(self, position):
@@ -192,8 +191,6 @@ class tower_defense:
     def nuke(self):
         for index, enemy in enumerate(self.enemies_on_screen):
             self.enemy_type_list[index] -= 3
-            if self.enemy_type_list[index] <= 0:
-                self.delete_enemy(index)
 
     def turret1_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
@@ -202,9 +199,7 @@ class tower_defense:
                     if enemy.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
                         self.enemy_type_list[enemy_index] -= 1
-                        if self.enemy_type_list[enemy_index] <= 0:
-                            self.delete_enemy(enemy_index)
-                            break
+                        break
 
 
     def turret2_attack(self):
@@ -214,9 +209,7 @@ class tower_defense:
                     if enemy.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
                         self.enemy_type_list[enemy_index] -= 2
-                        if self.enemy_type_list[enemy_index] <= 0:
-                            self.delete_enemy(enemy_index)
-                            break
+                        break
 
     def turret3_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
@@ -225,8 +218,6 @@ class tower_defense:
                     if enemy.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
                         self.enemy_type_list[enemy_index] -= 1
-                        if self.enemy_type_list[enemy_index] <= 0:
-                            self.delete_enemy(enemy_index)
 
 
 
@@ -257,7 +248,7 @@ class tower_defense:
             elif self.turret_type_list[index] == 3:
                 display.blit(blue_turret_surface, self.turret_list[index])
             elif self.turret_type_list[index] == 4:
-                display.blit(baige_turret_surface, self.turret_list[index])
+                display.blit(nuke_item_surface, self.turret_list[index])
         for index, turret in enumerate(self.turret_range_rect):
             for enemy in self.enemies_on_screen:
                 if turret.colliderect(enemy):
@@ -276,7 +267,7 @@ class tower_defense:
         display.blit(green_turret_surface, turret_rect)
         display.blit(red_turret_surface, turret2_rect)
         display.blit(blue_turret_surface, turret3_rect)
-        display.blit(baige_turret_surface, nuke_rect)
+        display.blit(nuke_item_surface, nuke_rect)
         display.blit(mouse_upgrade_surface, mouse_upgrade_rect)
         return
 
@@ -343,7 +334,7 @@ class tower_defense:
     def check_collision_end(self, enemy, index):
         if end_rect.colliderect(enemy):
             self.health -= self.enemy_type_list[index]
-            self.delete_enemy(index)
+            self.enemy_type_list[index] = 0
             self.check_game_over()
             return True
         return
@@ -367,7 +358,7 @@ class tower_defense:
                 self.coins -= self.turret3_prize
                 self.item_place_state = 3
             return
-        elif mouse_rect.colliderect(nuke_rect):
+        elif mouse_rect.colliderect(nuke_rect) and self.ready:
             if self.coins >= self.nuke_prize and self.coins > 0:
                 self.coins -= self.nuke_prize
                 self.nuke()
@@ -389,9 +380,6 @@ class tower_defense:
         for index, enemy in enumerate(self.enemies_on_screen):
             if mouse_rect.colliderect(enemy):
                 self.enemy_type_list[index] -= self.click_damage
-                if self.enemy_type_list[index] <= 0:
-                    self.delete_enemy(index)
-                    break
         return
 
     def delete_turret(self, index):
@@ -400,13 +388,18 @@ class tower_defense:
         del self.turret_range_rect[index]
         return
 
-    def delete_enemy(self, index):
-        del self.enemy_type_list[index]
-        del self.enemies_on_screen[index]
-        del self.enemy_state_list[index]
-        del self.enemies_list[index]
-        self.enemy_number -= 1
-        self.coins += 1
+    def delete_enemy(self):
+        index_list = []
+        for index, enemy in enumerate(self.enemy_type_list):
+            if enemy <= 0:
+                index_list.insert(0, index)
+        for index in index_list:
+            del self.enemy_type_list[index]
+            del self.enemies_on_screen[index]
+            del self.enemy_state_list[index]
+            del self.enemies_list[index]
+            self.enemy_number -= 1
+            self.coins += 1
         return
 
     def update_high_score(self):
@@ -444,6 +437,14 @@ class tower_defense:
         turret_rect.centery -= 3
         display.blit(turret_surface, turret_rect)
 
+        other_outline_surface = self.turret_font.render(f"Other", True, (0, 0, 0)).convert_alpha()
+        other_surface = self.turret_font.render(f"Other", True, (255, 255, 255)).convert_alpha()
+        other_rect = other_surface.get_rect(midtop=(self.width-(350/2), 310))
+        display.blit(other_outline_surface, other_rect)
+        other_rect.centerx -= 3
+        other_rect.centery -= 3
+        display.blit(other_surface, other_rect)
+
         health_outline_surface = self.health_font.render(f"Health: {self.health}", True, (0, 0, 0)).convert_alpha()
         health_surface = self.health_font.render(f"Health: {self.health}", True, (255, 255, 255)).convert_alpha()
         health_rect = health_surface.get_rect(midtop=(self.width-(350/2), 670))
@@ -480,8 +481,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Attack: One enemy at once", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Attack: One enemy at once", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Deals 1 damage", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Deals 1 damage", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -503,8 +504,8 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-                    prize_outline_surface = self.info_font.render(f"Attack: One enemy at once", True, (0, 0, 0)).convert_alpha()
-                    prize_surface = self.info_font.render(f"Attack: One enemy at once", True, (255, 255, 255)).convert_alpha()
+                    prize_outline_surface = self.info_font.render(f"Deals 2 damage", True, (0, 0, 0)).convert_alpha()
+                    prize_surface = self.info_font.render(f"Deals 2 damage", True, (255, 255, 255)).convert_alpha()
                     prize_rect = prize_surface.get_rect(topright=(mouse_pos[0]-5, mouse_pos[1]+55))
                     display.blit(prize_outline_surface, prize_rect)
                     prize_rect.centerx -= 3
@@ -579,7 +580,6 @@ class tower_defense:
                     prize_rect.centerx -= 3
                     prize_rect.centery -= 3
                     display.blit(prize_surface, prize_rect)
-
         return
 
     def draw_ready(self):
@@ -639,7 +639,7 @@ class tower_defense:
                         self.check_click_collision(mouse_rect, mouse)
                     if event.button == 3 and self.item_place_state != 0:
                         if self.item_place_state == 1:
-                            self.coins += 100
+                            self.coins += 70
                         elif self.item_place_state == 2:
                             self.coins += 200
                         elif self.item_place_state == 3:
@@ -694,6 +694,8 @@ class tower_defense:
                 if event.type == TURRET3_ATTACK:
                     self.turret_attack_state = 1
                     self.turret3_attack()
+
+            self.delete_enemy()
 
             if self.game_active:
                 self.blit(mouse, mouse_rect)
