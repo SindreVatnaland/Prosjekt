@@ -1,7 +1,16 @@
+
 import pygame, random, sys
 
 pygame.mixer.pre_init(frequency=44100, size=32, channels=1, buffer=1024)
 pygame.init()
+
+pygame.mixer.init()
+pygame.mixer.music.load("sounds/Waterflame - Glorious morning.mp3")
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(-1)
+
+hit_sound = pygame.mixer.Sound("sounds/sfx_hit.wav")
+hit_sound.set_volume(0.025)
 
 width = 1280
 height = 720
@@ -448,6 +457,7 @@ class tower_defense:
             del self.enemies_list[index]
             self.enemy_number -= 1
             self.coins += 3
+            hit_sound.play()
         return
 
     def update_high_score(self):
@@ -723,10 +733,10 @@ class tower_defense:
                     if event.key == pygame.K_SPACE and not self.ready:
                         self.coins += int((self.wave * 100)**0.4+10)
                         self.wave += 1
-                        if self.speed < 12:
-                            self.speed = 3 + self.wave**0.6
-                            if self.speed >= 10:
-                                self.speed = 10
+                        if self.speed < 20:
+                            self.speed = 3 + self.wave**0.75
+                            if self.speed >= 20:
+                                self.speed = 20
                         print(self.speed)
                         self.enemies_list = []
                         self.enemies_on_screen = []
