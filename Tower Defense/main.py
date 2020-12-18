@@ -1,4 +1,4 @@
-
+import copy
 import pygame, random, sys
 
 pygame.mixer.pre_init(frequency=44100, size=32, channels=1, buffer=1024)
@@ -100,6 +100,18 @@ MOUSE_COOLDOWN = pygame.USEREVENT + 4
 pygame.time.set_timer(MOUSE_COOLDOWN, 250)
 
 
+class enemy:
+    def __init__(self, health, rect):
+        self.rect = rect
+        self.health = health
+        self.state = 0
+
+class turret:
+    def __init__(self):
+        self.type = None
+        self.range = None
+        self.attack_state = None
+
 class tower_defense:
     def __init__(self, width, height):
         self.game_over_font = pygame.font.Font("04B_19.TTF", 120)
@@ -131,9 +143,9 @@ class tower_defense:
 
         self.enemies_list = []
         self.enemies_on_screen = []
-        self.enemy_state_list = []
         self.enemy_number = 0
-        self.enemy_type_list = []
+        # self.enemy_type_list = []
+        # self.enemy_state_list = []
 
         self.turret_list = []
         self.turret_type_list = []
@@ -200,87 +212,81 @@ class tower_defense:
             return
 
     def nuke(self):
-        for index, enemy in enumerate(self.enemies_on_screen):
-            self.enemy_type_list[index] -= 3
+        for cur_enemy in self.enemies_on_screen:
+            cur_enemy.health -= 3
 
     def turret1_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
             if self.turret_type_list[turret_index] == 1:
-                for enemy_index, enemy in enumerate(self.enemies_on_screen):
-                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                for cur_enemy in self.enemies_on_screen:
+                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
-                        self.enemy_type_list[enemy_index] -= 1
+                        cur_enemy.health -= 1
                         break
 
 
     def turret2_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
             if self.turret_type_list[turret_index] == 2:
-                for enemy_index, enemy in enumerate(self.enemies_on_screen):
-                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                for cur_enemy in self.enemies_on_screen:
+                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
-                        self.enemy_type_list[enemy_index] -= 2
+                        cur_enemy.health -= 2
                         break
 
     def turret3_attack(self):
         for turret_index, turret in enumerate(self.turret_list):
             if self.turret_type_list[turret_index] == 3:
-                for enemy_index, enemy in enumerate(self.enemies_on_screen):
-                    if enemy.colliderect(self.turret_range_rect[turret_index]):
+                for cur_enemy in self.enemies_on_screen:
+                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
                         self.turret_attack_states[turret_index] = 1
-                        self.enemy_type_list[enemy_index] -= 1
+                        cur_enemy.health -= 1
 
 
 
     def create_enemies(self):
         if self.wave < 10:
             for i in range(self.wave*12):
-                self.enemies_list.append(enemy_rect)
-                self.enemy_state_list.append(0)
                 if i <= 10:
-                    self.enemy_type_list.append(1)
+                    self.enemies_list.append(enemy(1, enemy_rect))
                 elif i < 30:
-                    self.enemy_type_list.append(random.randint(1, 2))
+                    self.enemies_list.append(enemy(random.randint(1, 2), enemy_rect))
                 elif i < 50:
-                    self.enemy_type_list.append(random.randint(1, 3))
+                    self.enemies_list.append(enemy(random.randint(1, 3), enemy_rect))
                 elif i < 70:
-                    self.enemy_type_list.append(random.randint(2, 3))
+                    self.enemies_list.append(enemy(random.randint(2, 3), enemy_rect))
                 elif i < 100:
-                    self.enemy_type_list.append(random.randint(3, 4))
+                    self.enemies_list.append(enemy(random.randint(2, 4), enemy_rect))
                 else:
-                    self.enemy_type_list.append(random.randint(3, 5))
+                    self.enemies_list.append(enemy(random.randint(3, 5), enemy_rect))
         elif self.wave < 20:
             for i in range(self.wave*10):
-                self.enemies_list.append(enemy_rect)
-                self.enemy_state_list.append(0)
                 if i <= 10:
-                    self.enemy_type_list.append(random.randint(1, 2))
+                    self.enemies_list.append(enemy(random.randint(1, 2), enemy_rect))
                 elif i < 30:
-                    self.enemy_type_list.append(random.randint(1, 3))
+                    self.enemies_list.append(enemy(random.randint(1, 3), enemy_rect))
                 elif i < 50:
-                    self.enemy_type_list.append(random.randint(2, 3))
+                    self.enemies_list.append(enemy(random.randint(2, 3), enemy_rect))
                 elif i < 70:
-                    self.enemy_type_list.append(random.randint(2, 4))
+                    self.enemies_list.append(enemy(random.randint(2, 4), enemy_rect))
                 elif i < 100:
-                    self.enemy_type_list.append(random.randint(3, 5))
+                    self.enemies_list.append(enemy(random.randint(3, 5), enemy_rect))
                 else:
-                    self.enemy_type_list.append(random.randint(4, 5))
+                    self.enemies_list.append(enemy(random.randint(4, 5), enemy_rect))
         else:
             for i in range(self.wave*11):
-                self.enemies_list.append(enemy_rect)
-                self.enemy_state_list.append(0)
-                if i <= 10:
-                    self.enemy_type_list.append(2)
+                if i <= 30:
+                    self.enemies_list.append(enemy(random.randint(2, 3), enemy_rect))
                 elif i < 30:
-                    self.enemy_type_list.append(random.randint(2, 3))
+                    self.enemies_list.append(enemy(random.randint(2, 4), enemy_rect))
                 elif i < 50:
-                    self.enemy_type_list.append(random.randint(2, 4))
+                    self.enemies_list.append(enemy(random.randint(2, 5), enemy_rect))
                 elif i < 70:
-                    self.enemy_type_list.append(random.randint(3, 4))
+                    self.enemies_list.append(enemy(random.randint(3, 5), enemy_rect))
                 elif i < 100:
-                    self.enemy_type_list.append(random.randint(4, 5))
+                    self.enemies_list.append(enemy(random.randint(4, 5), enemy_rect))
                 else:
-                    self.enemy_type_list.append(5)
+                    self.enemies_list.append(enemy(5, enemy_rect))
         return
 
     def draw_turrets(self):
@@ -294,8 +300,8 @@ class tower_defense:
             elif self.turret_type_list[index] == 4:
                 display.blit(nuke_item_surface, self.turret_list[index])
         for index, turret in enumerate(self.turret_range_rect):
-            for enemy in self.enemies_on_screen:
-                if turret.colliderect(enemy):
+            for cur_enemy in self.enemies_on_screen:
+                if turret.colliderect(cur_enemy.rect):
                     if self.turret_attack_states[index] == 1:
                         pygame.draw.rect(display, (255, 0, 0), turret, 2)
                         pygame.draw.rect(display, (255, 0, 0), self.turret_list[index], 2)
@@ -330,55 +336,55 @@ class tower_defense:
             return
 
     def draw_enemies(self):
-        for i, enemy in enumerate(self.enemies_on_screen):
-            self.move_enemy(enemy, i)
+        for cur_enemy in self.enemies_on_screen:
+            self.move_enemy(cur_enemy)
             if self.enemy_number == 0:
                 continue
-            elif self.enemy_type_list[i] == 1:
-                display.blit(green_enemy_surface, enemy)
-            elif self.enemy_type_list[i] == 2:
-                display.blit(yellow_enemy_surface, enemy)
-            elif self.enemy_type_list[i] == 3:
-                display.blit(blue_enemy_surface, enemy)
-            elif self.enemy_type_list[i] == 4:
-                display.blit(orange_enemy_surface, enemy)
-            elif self.enemy_type_list[i] == 5:
-                display.blit(red_enemy_surface, enemy)
+            elif cur_enemy.health == 1:
+                display.blit(green_enemy_surface, cur_enemy.rect)
+            elif cur_enemy.health == 2:
+                display.blit(yellow_enemy_surface, cur_enemy.rect)
+            elif cur_enemy.health == 3:
+                display.blit(blue_enemy_surface, cur_enemy.rect)
+            elif cur_enemy.health == 4:
+                display.blit(orange_enemy_surface, cur_enemy.rect)
+            elif cur_enemy.health == 5:
+                display.blit(red_enemy_surface, cur_enemy.rect)
         return
 
-    def move_enemy(self, enemy, index):
-        if not self.check_turn_collision(enemy, index):
-            if self.enemy_number >= 1:
-                if self.enemy_state_list[index] == 0:
-                    enemy.centerx += self.speed
-                elif self.enemy_state_list[index] == 1:
-                    enemy.centery += self.speed
-                elif self.enemy_state_list[index] == 2:
-                    enemy.centerx -= self.speed
+    def move_enemy(self, cur_enemy):
+        if not self.check_turn_collision(cur_enemy):
+            if self.enemy_number > 0:
+                if cur_enemy.state == 0:
+                    cur_enemy.rect.centerx += self.speed
+                elif cur_enemy.state == 1:
+                    cur_enemy.rect.centery += self.speed
+                elif cur_enemy.state == 2:
+                    cur_enemy.rect.centerx -= self.speed
                 else:
-                    enemy.centery -= self.speed
+                    cur_enemy.rect.centery -= self.speed
         return True
 
-    def check_turn_collision(self, enemy, index):
+    def check_turn_collision(self, cur_enemy):
         for i, box in enumerate(self.turn_collision_box_list):
-            if box.colliderect(enemy):
+            if box.colliderect(cur_enemy.rect):
                 if i in [1, 3, 7, 9, 11]:
-                    self.enemy_state_list[index] = 0
+                    cur_enemy.state = 0
                 elif i in [0, 4, 6, 10]:
-                    self.enemy_state_list[index] = 1
+                    cur_enemy.state = 1
                 elif i == 5:
-                    self.enemy_state_list[index] = 2
+                    cur_enemy.state = 2
                 else:
-                    self.enemy_state_list[index] = 3
+                    cur_enemy.state = 3
             else:
-                if self.check_collision_end(enemy, index):
+                if self.check_collision_end(cur_enemy):
                     return False
         return
 
-    def check_collision_end(self, enemy, index):
-        if end_rect.colliderect(enemy):
-            self.health -= self.enemy_type_list[index]
-            self.enemy_type_list[index] = 0
+    def check_collision_end(self, cur_enemy):
+        if end_rect.colliderect(cur_enemy.rect):
+            self.health -= cur_enemy.health
+            cur_enemy.health = 0
             self.check_game_over()
             return True
         return
@@ -426,9 +432,9 @@ class tower_defense:
                 self.delete_turret(index)
                 break
         if self.mouse_state == 1:
-            for index, enemy in enumerate(self.enemies_on_screen):
-                if mouse_rect.colliderect(enemy):
-                    self.enemy_type_list[index] -= self.click_damage
+            for cur_enemy in self.enemies_on_screen:
+                if mouse_rect.colliderect(cur_enemy.rect):
+                    cur_enemy.health -= self.click_damage
                     self.mouse_state = 0
                     break
         return
@@ -447,13 +453,11 @@ class tower_defense:
 
     def delete_enemy(self):
         index_list = []
-        for index, enemy in enumerate(self.enemy_type_list):
-            if enemy <= 0:
+        for index, cur_enemy in enumerate(self.enemies_on_screen):
+            if cur_enemy.health <= 0:
                 index_list.insert(0, index)
         for index in index_list:
-            del self.enemy_type_list[index]
             del self.enemies_on_screen[index]
-            del self.enemy_state_list[index]
             del self.enemies_list[index]
             self.enemy_number -= 1
             self.coins += 3
@@ -721,9 +725,7 @@ class tower_defense:
                         self.wave = 0
                         self.enemies_list = []
                         self.enemies_on_screen = []
-                        self.enemy_state_list = []
                         self.enemy_number = 0
-                        self.enemy_type_list = []
                         self.turret_list = []
                         self.turret_type_list = []
                         self.turret_range_rect = []
@@ -740,9 +742,7 @@ class tower_defense:
                         print(self.speed)
                         self.enemies_list = []
                         self.enemies_on_screen = []
-                        self.enemy_state_list = []
                         self.enemy_number = 0
-                        self.enemy_type_list = []
                         self.create_enemies()
                         self.health += 5
                         if self.wave > self.high_score:
@@ -751,7 +751,7 @@ class tower_defense:
                         self.ready = True
                 if event.type == ENEMYSPAWN:
                     if len(self.enemies_on_screen) < len(self.enemies_list):
-                        self.enemies_on_screen.append(self.enemies_list[self.enemy_number].copy())
+                        self.enemies_on_screen.append(copy.deepcopy(self.enemies_list[self.enemy_number]))
                         self.enemy_number += 1
 
                 if event.type == MOUSE_COOLDOWN:
@@ -767,7 +767,6 @@ class tower_defense:
                     self.turret3_attack()
 
             self.delete_enemy()
-
             if self.game_active:
                 self.blit(mouse, mouse_rect)
                 if len(self.enemies_list) <= 0:
