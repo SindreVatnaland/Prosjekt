@@ -108,8 +108,9 @@ class enemy:
 
 class turret:
     def __init__(self):
-        self.type = None
+        self.rect = None
         self.range = None
+        self.type = None
         self.attack_state = None
 
 class tower_defense:
@@ -127,7 +128,7 @@ class tower_defense:
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
 
-        self.coins = 150
+        self.coins = 150000
 
         self.game_active = True
         self.ready = True
@@ -148,9 +149,9 @@ class tower_defense:
         # self.enemy_state_list = []
 
         self.turret_list = []
-        self.turret_type_list = []
-        self.turret_range_rect = []
-        self.turret_attack_states = []
+        # self.turret_type_list = []
+        # self.turret_range_rect = []
+        # self.turret_attack_states = []
 
         self.turret1_prize = 100
         self.turret2_prize = 250
@@ -180,29 +181,25 @@ class tower_defense:
 
     def place_turret(self, position):
         if self.item_place_state != 0:
-            turret_rect = pygame.Rect(position[0]-37, position[1]-35, 70, 70)
-            for line in lines_list:
-                if line.colliderect(turret_rect):
-                    return
+            turret_box = pygame.Rect(position[0]-37, position[1]-35, 70, 70)
             if position[0] < self.width-350-37:
                 for line_rect in lines_list:
-                    if turret_rect.colliderect(line_rect):
+                    if turret_box.colliderect(line_rect):
                         return
-                for rect in self.turret_list:
-                    if not turret_rect.colliderect(rect):
-                        continue
-                    else:
+                for cur_turret in self.turret_list:
+                    if turret_box.colliderect(cur_turret.rect):
                         return
-                self.turret_list.append(turret_rect)
+                self.turret_list.append(turret())
                 if self.item_place_state == 1 or self.item_place_state == 2:
-                    self.turret_range_rect.append((pygame.Rect(position[0]-37-self.item_place_state*75,
+                    self.turret_list[-1].range = (pygame.Rect(position[0]-37-self.item_place_state*75,
                                                                position[1]-35-self.item_place_state*75,
                                                                70+2*self.item_place_state*75,
-                                                               70+2*self.item_place_state*75)))
+                                                               70+2*self.item_place_state*75))
                 elif self.item_place_state == 3:
-                    self.turret_range_rect.append((pygame.Rect(position[0]-37-1*75, position[1]-35-1*75, 70+2*1*75, 70+2*1*75)))
-                self.turret_type_list.append(self.item_place_state)
-                self.turret_attack_states.append(0)
+                    self.turret_list[-1].range = (pygame.Rect(position[0]-37-1*75, position[1]-35-1*75, 70+2*1*75, 70+2*1*75))
+                self.turret_list[-1].type = self.item_place_state
+                self.turret_list[-1].attack_state = 0
+                self.turret_list[-1].rect = (pygame.Rect(position[0]-37, position[1]-35, 70, 70))
                 self.item_place_state = 0
         return
 
@@ -216,31 +213,32 @@ class tower_defense:
             cur_enemy.health -= 3
 
     def turret1_attack(self):
-        for turret_index, turret in enumerate(self.turret_list):
-            if self.turret_type_list[turret_index] == 1:
+        for cur_turret in self.turret_list:
+            if cur_turret.type == 1:
                 for cur_enemy in self.enemies_on_screen:
-                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
-                        self.turret_attack_states[turret_index] = 1
+                    if cur_enemy.rect.colliderect(cur_turret.range):
+                        cur_turret.attack_state = 1
                         cur_enemy.health -= 1
                         break
 
 
     def turret2_attack(self):
-        for turret_index, turret in enumerate(self.turret_list):
-            if self.turret_type_list[turret_index] == 2:
+        for cur_turret in self.turret_list:
+            if cur_turret.type == 2:
                 for cur_enemy in self.enemies_on_screen:
-                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
-                        self.turret_attack_states[turret_index] = 1
+                    if cur_enemy.rect.colliderect(cur_turret.range):
+                        cur_turret.attack_state = 1
                         cur_enemy.health -= 2
                         break
 
     def turret3_attack(self):
-        for turret_index, turret in enumerate(self.turret_list):
-            if self.turret_type_list[turret_index] == 3:
+        for cur_turret in self.turret_list:
+            if cur_turret.type == 3:
                 for cur_enemy in self.enemies_on_screen:
-                    if cur_enemy.rect.colliderect(self.turret_range_rect[turret_index]):
-                        self.turret_attack_states[turret_index] = 1
+                    if cur_enemy.rect.colliderect(cur_turret.range):
+                        cur_turret.attack_state = 1
                         cur_enemy.health -= 1
+
 
 
 
@@ -290,25 +288,25 @@ class tower_defense:
         return
 
     def draw_turrets(self):
-        for index, turret in enumerate(self.turret_list):
-            if self.turret_type_list[index] == 1:
-                display.blit(green_turret_surface, self.turret_list[index])
-            elif self.turret_type_list[index] == 2:
-                display.blit(red_turret_surface, self.turret_list[index])
-            elif self.turret_type_list[index] == 3:
-                display.blit(blue_turret_surface, self.turret_list[index])
-            elif self.turret_type_list[index] == 4:
-                display.blit(nuke_item_surface, self.turret_list[index])
-        for index, turret in enumerate(self.turret_range_rect):
+        for cur_turret in self.turret_list:
+            if cur_turret.type == 1:
+                display.blit(green_turret_surface, cur_turret.rect)
+            elif cur_turret.type == 2:
+                display.blit(red_turret_surface, cur_turret.rect)
+            elif cur_turret.type == 3:
+                display.blit(blue_turret_surface, cur_turret.rect)
+            elif cur_turret.type == 4:
+                display.blit(nuke_item_surface, cur_turret.rect)
+        for cur_turret in self.turret_list:
             for cur_enemy in self.enemies_on_screen:
-                if turret.colliderect(cur_enemy.rect):
-                    if self.turret_attack_states[index] == 1:
-                        pygame.draw.rect(display, (255, 0, 0), turret, 2)
-                        pygame.draw.rect(display, (255, 0, 0), self.turret_list[index], 2)
-                        self.turret_attack_states[index] = 0
+                if cur_turret.range.colliderect(cur_enemy.rect):
+                    if cur_turret.attack_state == 1:
+                        pygame.draw.rect(display, (255, 0, 0), cur_turret.rect, 2)
+                        pygame.draw.rect(display, (255, 0, 0), cur_turret.range, 2)
+                        cur_turret.attack_state = 0
                     else:
-                        pygame.draw.rect(display, (0, 0, 0), turret, 2)
-                        pygame.draw.rect(display, (0, 0, 0), self.turret_list[index], 2)
+                        pygame.draw.rect(display, (0, 0, 0), cur_turret.rect, 2)
+                        pygame.draw.rect(display, (0, 0, 0), cur_turret.range, 2)
                     break
 
         return
@@ -426,9 +424,9 @@ class tower_defense:
                     self.upgrade_click_damage()
             return
 
-        for index, turret in enumerate(self.turret_list):
-            if mouse_rect.colliderect(turret):
-                self.item_place_state = self.turret_type_list[index]
+        for index, cur_turret in enumerate(self.turret_list):
+            if mouse_rect.colliderect(cur_turret.rect):
+                self.item_place_state = cur_turret.type
                 self.delete_turret(index)
                 break
         if self.mouse_state == 1:
@@ -441,8 +439,6 @@ class tower_defense:
 
     def delete_turret(self, index):
         del self.turret_list[index]
-        del self.turret_type_list[index]
-        del self.turret_range_rect[index]
         if index == 0:
             self.turret1_prize -= 10
         elif index == 1:
@@ -727,9 +723,6 @@ class tower_defense:
                         self.enemies_on_screen = []
                         self.enemy_number = 0
                         self.turret_list = []
-                        self.turret_type_list = []
-                        self.turret_range_rect = []
-                        self.turret_attack_states = []
                         self.game_active = True
                         self.ready = True
                     if event.key == pygame.K_SPACE and not self.ready:
@@ -765,7 +758,6 @@ class tower_defense:
                 if event.type == TURRET3_ATTACK:
                     self.turret_attack_state = 1
                     self.turret3_attack()
-
             self.delete_enemy()
             if self.game_active:
                 self.blit(mouse, mouse_rect)
