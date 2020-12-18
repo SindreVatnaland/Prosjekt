@@ -115,6 +115,11 @@ class turret:
 
 class tower_defense:
     def __init__(self, width, height):
+
+        self.spawnrate = 350
+        self.ENEMYSPAWN = pygame.USEREVENT + 0
+        pygame.time.set_timer(self.ENEMYSPAWN, self.spawnrate)
+
         self.game_over_font = pygame.font.Font("04B_19.TTF", 120)
         self.coins_font = pygame.font.Font("04B_19.TTF", 25)
         self.ready_font = pygame.font.Font("04B_19.TTF", 40)
@@ -128,7 +133,7 @@ class tower_defense:
         self.high_score = int(high_score.readlines()[0])
         high_score.close()
 
-        self.coins = 150000
+        self.coins = 150
 
         self.game_active = True
         self.ready = True
@@ -145,13 +150,8 @@ class tower_defense:
         self.enemies_list = []
         self.enemies_on_screen = []
         self.enemy_number = 0
-        # self.enemy_type_list = []
-        # self.enemy_state_list = []
 
         self.turret_list = []
-        # self.turret_type_list = []
-        # self.turret_range_rect = []
-        # self.turret_attack_states = []
 
         self.turret1_prize = 100
         self.turret2_prize = 250
@@ -200,6 +200,13 @@ class tower_defense:
                 self.turret_list[-1].type = self.item_place_state
                 self.turret_list[-1].attack_state = 0
                 self.turret_list[-1].rect = (pygame.Rect(position[0]-37, position[1]-35, 70, 70))
+                if self.turret_list[-1].type == 1:
+                    self.turret1_prize += 10
+                elif self.turret_list[-1].type == 2:
+                    self.turret2_prize += 25
+                elif self.turret_list[-1].type == 3:
+                    self.turret3_prize += 100
+
                 self.item_place_state = 0
         return
 
@@ -243,6 +250,9 @@ class tower_defense:
 
 
     def create_enemies(self):
+        if self.wave % 2 == 0:
+            self.spawnrate -= self.spawnrate**0.5
+            pygame.time.set_timer(self.ENEMYSPAWN, int(self.spawnrate))
         if self.wave < 10:
             for i in range(self.wave*12):
                 if i <= 10:
@@ -394,19 +404,16 @@ class tower_defense:
         elif mouse_rect.colliderect(turret_rect):
             if self.coins >= self.turret1_prize and self.coins > 0:
                 self.coins -= self.turret1_prize
-                self.turret1_prize += 10
                 self.item_place_state = 1
             return
         elif mouse_rect.colliderect(turret2_rect):
             if self.coins >= self.turret2_prize and self.coins > 0:
                 self.coins -= self.turret2_prize
-                self.turret2_prize += 25
                 self.item_place_state = 2
             return
         elif mouse_rect.colliderect(turret3_rect):
             if self.coins >= self.turret3_prize and self.coins > 0:
                 self.coins -= self.turret3_prize
-                self.turret3_prize += 100
                 self.item_place_state = 3
             return
         elif mouse_rect.colliderect(nuke_rect) and self.ready:
@@ -438,12 +445,12 @@ class tower_defense:
         return
 
     def delete_turret(self, index):
-        del self.turret_list[index]
-        if index == 0:
+        cur_turret = self.turret_list.pop(index)
+        if cur_turret.type == 1:
             self.turret1_prize -= 10
-        elif index == 1:
+        elif cur_turret.type == 2:
             self.turret2_prize -= 25
-        elif index == 2:
+        elif cur_turret.type == 3:
             self.turret3_prize -= 100
         return
 
@@ -742,7 +749,7 @@ class tower_defense:
                             self.high_score = self.wave
                         self.game_active = True
                         self.ready = True
-                if event.type == ENEMYSPAWN:
+                if event.type == self.ENEMYSPAWN:
                     if len(self.enemies_on_screen) < len(self.enemies_list):
                         self.enemies_on_screen.append(copy.deepcopy(self.enemies_list[self.enemy_number]))
                         self.enemy_number += 1
