@@ -1,0 +1,22 @@
+html, body {
+    padding-top: 4em;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+@font-face {
+    font-family: 'EAN-13';
+    src: url(fonts/LibreBarcodeEAN13Text-Regular.ttf) format("woff"),
+         url(fonts/LibreBarcodeEAN13Text-Regular.ttf) format("woff2"),
+         url(fonts/LibreBarcodeEAN13Text-Regular.ttf) format("truetype");
+    font-size: 200px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+p {
+    font-family: EAN-13, serif;
+    font-size: 200px;
+    font-weight: 300;
+}

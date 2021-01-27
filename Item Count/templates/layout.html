@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="https://is5-ssl.mzstatic.com/image/thumb/Purple114/v4/8f/67/5a/8f675ade-4a6b-f808-d72d-f557d5c7ab47/source/256x256bb.jpg">
+<head>
+
+</head>
+<meta name="viewport" content="initial-scale=1.2, maximum-scale=1.2">
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+<div style='text-align: center' class="container">
+    <br/>
+<form action={{url_for("main")}}>
+    <input type="submit" value="Hjem" />
+    </form>
+<br/>
+    {%  block content %}{% endblock %}
+</div>
+<br/><br/>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</html>

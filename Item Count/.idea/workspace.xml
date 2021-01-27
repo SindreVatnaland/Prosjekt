@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="52954007-802e-4a16-a79e-632068fa7c20" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/add_item.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_item.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Flask Main" />
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="ProjectId" id="1lt4QQmzICM7gITxmtT68sSbmxV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/functions" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/functions" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/images" />
+      <recent name="$PROJECT_DIR$/files" />
+      <recent name="$PROJECT_DIR$/functions" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/functions/file" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Flask server.Flask (app.py)">
+    <configuration name="func" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="untitled" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/func.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask (app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="untitled" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="untitled" type="Python.FlaskServer">
+      <module name="untitled" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flask server.Flask (app.py)" />
+        <item itemvalue="Python.func" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="showServicesTree" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52954007-802e-4a16-a79e-632068fa7c20" name="Default Changelist" comment="" />
+      <created>1608403036412</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608403036412</updated>
+      <workItem from="1608403048508" duration="1951000" />
+      <workItem from="1608405912037" duration="14623000" />
+      <workItem from="1608422352326" duration="45544000" />
+      <workItem from="1608910782959" duration="89000" />
+      <workItem from="1608910959613" duration="6000" />
+      <workItem from="1608911253919" duration="1249000" />
+      <workItem from="1608932466738" duration="4640000" />
+      <workItem from="1609098283279" duration="4808000" />
+      <workItem from="1609112758343" duration="1952000" />
+      <workItem from="1609115897606" duration="800000" />
+      <workItem from="1609169489536" duration="9013000" />
+      <workItem from="1609179798590" duration="371000" />
+      <workItem from="1609181225127" duration="3975000" />
+      <workItem from="1609252064439" duration="3849000" />
+      <workItem from="1609269358253" duration="1266000" />
+      <workItem from="1609270629415" duration="6279000" />
+      <workItem from="1609277865407" duration="2252000" />
+      <workItem from="1609284182676" duration="341000" />
+      <workItem from="1609285704813" duration="57000" />
+      <workItem from="1609286300313" duration="36000" />
+      <workItem from="1609316277647" duration="2039000" />
+      <workItem from="1609343207040" duration="3146000" />
+      <workItem from="1609965519734" duration="3307000" />
+      <workItem from="1610043792137" duration="2241000" />
+    </task>
+    <task id="LOCAL-00001" summary="Ferdig">
+      <created>1608908235606</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1608908235606</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Ferdig">
+      <created>1608910850024</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1608910850024</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixed scaling">
+      <created>1608912897546</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1608912897546</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Delete items in shelves">
+      <created>1608935749050</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1608935749050</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed bug when deleting item">
+      <created>1608936457149</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1608936457149</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added confirm for deleting all&#10;&#10;added delete shelf function">
+      <created>1609099949406</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1609099949406</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed bug where spaces in shelf-names crashed she site&#10;&#10;Shelf names with punctuation doesnt get created">
+      <created>1609101968059</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1609101968059</updated>
+    </task>
+    <task id="LOCAL-00008" summary="all inputs gets converted to lower case">
+      <created>1609102571389</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1609102571389</updated>
+    </task>
+    <task id="LOCAL-00009" summary="all inputs gets converted to lower case">
+      <created>1609102751593</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1609102751593</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed bug">
+      <created>1609103044943</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1609103044943</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added img if empty&#10;&#10;moved &quot;delete shelf&quot; to bottom">
+      <created>1609114414410</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1609114414410</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fixed bug when adding item">
+      <created>1609116184328</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1609116184328</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Extent size of name length">
+      <created>1609116360715</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1609116360715</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added images*">
+      <created>1609181735622</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1609181735622</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added images*">
+      <created>1609181752235</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1609181752235</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added images*">
+      <created>1609182244575</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1609182244575</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added images*">
+      <created>1609182439517</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1609182439517</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Removes image feature">
+      <created>1609183237924</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1609183237924</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added full dictionary">
+      <created>1609254984931</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1609254984931</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added full dictionary">
+      <created>1609255220479</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1609255220479</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Made it possible to upload excel files to expand dictionary&#10;&#10;Shelf names are capitalized and have spaces">
+      <created>1609276642690</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1609276642690</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Easier to delete shelves">
+      <created>1609277958590</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1609277958590</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Fix bug when viewing old shelves&#10;&#10;Disable inputs that should not be changed">
+      <created>1609282607284</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1609282607284</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Small visual changes">
+      <created>1609284471477</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1609284471477</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Small visual changes">
+      <created>1609285747943</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1609285747943</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Small visual changes">
+      <created>1609286320614</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1609286320614</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Fixes appbreaking bug">
+      <created>1609317758246</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1609317758246</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Only displaying name when adding item when necessary&#10;&#10;Deleting item returns back to shelf instead of home">
+      <created>1609345169721</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1609345169721</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Creates necessary folders at startup">
+      <created>1609346002466</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1609346002466</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Creates necessary folders at startup">
+      <created>1609973946256</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973946256</updated>
+    </task>
+    <task id="LOCAL-00031" summary="test">
+      <created>1609976512130</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1609976512131</updated>
+    </task>
+    <task id="LOCAL-00032" summary="test">
+      <created>1609976675344</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1609976675344</updated>
+    </task>
+    <task id="LOCAL-00033" summary="test">
+      <created>1609976858202</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1609976858202</updated>
+    </task>
+    <task id="LOCAL-00034" summary="test">
+      <created>1609976879746</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1609976879746</updated>
+    </task>
+    <task id="LOCAL-00035" summary="test">
+      <created>1609977021224</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1609977021224</updated>
+    </task>
+    <task id="LOCAL-00036" summary="test">
+      <created>1609978837549</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1609978837549</updated>
+    </task>
+    <task id="LOCAL-00037" summary="test">
+      <created>1609978851857</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1609978851857</updated>
+    </task>
+    <task id="LOCAL-00038" summary="test">
+      <created>1609978883054</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1609978883054</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ferdig" />
+    <MESSAGE value="Fixed scaling" />
+    <MESSAGE value="Delete items in shelves" />
+    <MESSAGE value="Fixed bug when deleting item" />
+    <MESSAGE value="Added confirm for deleting all&#10;&#10;added delete shelf function" />
+    <MESSAGE value="Fixed bug where spaces in shelf-names crashed she site&#10;&#10;Shelf names with punctuation doesnt get created" />
+    <MESSAGE value="all inputs gets converted to lower case" />
+    <MESSAGE value="fixed bug" />
+    <MESSAGE value="Added img if empty&#10;&#10;moved &quot;delete shelf&quot; to bottom" />
+    <MESSAGE value="Fixed bug when adding item" />
+    <MESSAGE value="Extent size of name length" />
+    <MESSAGE value="Added images*" />
+    <MESSAGE value="Removes image feature" />
+    <MESSAGE value="Added full dictionary" />
+    <MESSAGE value="Made it possible to upload excel files to expand dictionary&#10;&#10;Shelf names are capitalized and have spaces" />
+    <MESSAGE value="Easier to delete shelves" />
+    <MESSAGE value="Fix bug when viewing old shelves&#10;&#10;Disable inputs that should not be changed" />
+    <MESSAGE value="Small visual changes" />
+    <MESSAGE value="Fixes appbreaking bug" />
+    <MESSAGE value="Only displaying name when adding item when necessary&#10;&#10;Deleting item returns back to shelf instead of home" />
+    <MESSAGE value="Creates necessary folders at startup" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2141" y="269" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1609255034725">
+      <screen x="1440" y="-65" width="1920" height="1055" />
+    </state>
+    <state x="2141" y="252" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608825816695" />
+    <state x="2141" y="269" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609255034725" />
+    <state x="2138" y="219" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609255038087">
+      <screen x="1440" y="-65" width="1920" height="1055" />
+    </state>
+    <state x="2138" y="201" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608824368578" />
+    <state x="2138" y="219" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609255038087" />
+    <state x="309" y="26" key="CommitChangelistDialog2" timestamp="1609978882737">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state x="309" y="26" key="CommitChangelistDialog2/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1609978882737" />
+    <state x="1852" y="-64" key="CommitChangelistDialog2/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609346001999" />
+    <state x="309" y="26" key="CommitChangelistDialog2/0.25.1440.804@0.25.1440.804" timestamp="1608910849656" />
+    <state x="1852" y="-64" key="CommitChangelistDialog2/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609103044738" />
+    <state width="1398" height="284" key="GridCell.Tab.0.bottom" timestamp="1610045978234">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1148" height="286" key="GridCell.Tab.0.bottom/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608848987967" />
+    <state width="1398" height="284" key="GridCell.Tab.0.bottom/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1610045978234" />
+    <state width="1878" height="396" key="GridCell.Tab.0.bottom/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609346444029" />
+    <state width="1398" height="286" key="GridCell.Tab.0.bottom/0.25.1440.804@0.25.1440.804" timestamp="1608910872120" />
+    <state width="1878" height="365" key="GridCell.Tab.0.bottom/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609103217786" />
+    <state width="1878" height="286" key="GridCell.Tab.0.bottom/0.25.1440.875/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608823439592" />
+    <state width="1398" height="284" key="GridCell.Tab.0.center" timestamp="1610045978233">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1148" height="286" key="GridCell.Tab.0.center/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608848987962" />
+    <state width="1398" height="284" key="GridCell.Tab.0.center/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1610045978233" />
+    <state width="1878" height="396" key="GridCell.Tab.0.center/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609346444027" />
+    <state width="1398" height="286" key="GridCell.Tab.0.center/0.25.1440.804@0.25.1440.804" timestamp="1608910872118" />
+    <state width="1878" height="365" key="GridCell.Tab.0.center/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609103217785" />
+    <state width="1878" height="286" key="GridCell.Tab.0.center/0.25.1440.875/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608823439590" />
+    <state width="1398" height="284" key="GridCell.Tab.0.left" timestamp="1610045978232">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1148" height="286" key="GridCell.Tab.0.left/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608848987962" />
+    <state width="1398" height="284" key="GridCell.Tab.0.left/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1610045978232" />
+    <state width="1878" height="396" key="GridCell.Tab.0.left/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609346444025" />
+    <state width="1398" height="286" key="GridCell.Tab.0.left/0.25.1440.804@0.25.1440.804" timestamp="1608910872117" />
+    <state width="1878" height="365" key="GridCell.Tab.0.left/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609103217784" />
+    <state width="1878" height="286" key="GridCell.Tab.0.left/0.25.1440.875/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608823439589" />
+    <state width="1398" height="284" key="GridCell.Tab.0.right" timestamp="1610045978233">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1148" height="286" key="GridCell.Tab.0.right/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608848987965" />
+    <state width="1398" height="284" key="GridCell.Tab.0.right/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1610045978233" />
+    <state width="1878" height="396" key="GridCell.Tab.0.right/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609346444028" />
+    <state width="1398" height="286" key="GridCell.Tab.0.right/0.25.1440.804@0.25.1440.804" timestamp="1608910872119" />
+    <state width="1878" height="365" key="GridCell.Tab.0.right/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609103217786" />
+    <state width="1878" height="286" key="GridCell.Tab.0.right/0.25.1440.875/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608823439591" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1608908309755">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1878" height="374" key="GridCell.Tab.1.bottom/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608812143150" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1608859766172" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.25.1440.804@0.25.1440.804" timestamp="1608908309755" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1608908309755">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1878" height="374" key="GridCell.Tab.1.center/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608812143148" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1608859766171" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.25.1440.804@0.25.1440.804" timestamp="1608908309755" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1608908309754">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1878" height="374" key="GridCell.Tab.1.left/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608812143148" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1608859766171" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.25.1440.804@0.25.1440.804" timestamp="1608908309754" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1608908309755">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state width="1878" height="374" key="GridCell.Tab.1.right/0.0.1440.900/1440.-90.1920.1080@1440.-90.1920.1080" timestamp="1608812143149" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1608859766172" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.25.1440.804@0.25.1440.804" timestamp="1608908309755" />
+    <state x="1776" y="147" key="MultipleFileMergeDialog" timestamp="1608936634176">
+      <screen x="1440" y="-65" width="1920" height="984" />
+    </state>
+    <state x="1776" y="147" key="MultipleFileMergeDialog/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1608936634176" />
+    <state x="1909" y="98" key="SettingsEditor" timestamp="1608898044990">
+      <screen x="1440" y="-65" width="1920" height="1055" />
+    </state>
+    <state x="1909" y="98" key="SettingsEditor/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1608898044990" />
+    <state x="479" y="296" key="com.intellij.ide.util.TipDialog" timestamp="1610043792464">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state x="479" y="296" key="com.intellij.ide.util.TipDialog/0.25.1440.804/1440.-65.1920.1055@0.25.1440.804" timestamp="1610043792464" />
+    <state x="2079" y="291" key="com.intellij.ide.util.TipDialog/0.25.1440.804/1440.-65.1920.1055@1440.-65.1920.1055" timestamp="1609343207285" />
+    <state x="479" y="296" key="com.intellij.ide.util.TipDialog/0.25.1440.804@0.25.1440.804" timestamp="1609965520187" />
+    <state x="2079" y="267" key="com.intellij.ide.util.TipDialog/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1609098283249" />
+    <state x="1852" y="348" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1608936627793">
+      <screen x="1440" y="-65" width="1920" height="984" />
+    </state>
+    <state x="1852" y="348" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.25.1440.875/1440.-65.1920.984@1440.-65.1920.984" timestamp="1608936627793" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/untitled$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1610045978224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled$test.coverage" NAME="test Coverage Results" MODIFIED="1609255204136" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled$func.coverage" NAME="func Coverage Results" MODIFIED="1609973912177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled$untitled.coverage" NAME="untitled Coverage Results" MODIFIED="1608413781803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

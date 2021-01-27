@@ -1,0 +1,13 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<head>
+    <title>Ny hylle</title>
+</head>
+    <h1>Ny hylle</h1><br/>
+<body>
+    <form action="/counting" method="post">
+    <input name="this_name" value="Hylle 1" maxlength="15"/><br/><br/>
+    <input type="submit" value="Submit"/>
+    </form>
+</body>
+{%  endblock content %}

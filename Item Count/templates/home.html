@@ -1,0 +1,22 @@
+{%  extends "layout.html" %}
+{%  block content %}
+
+    <head>
+    <title>Hjem</title>
+    </head>
+<body>
+    <h1>Velg:</h1>
+
+    <form action={{url_for("counting")}}>
+    <input type="submit" value=" Telling " />
+    </form>
+    <p></p>
+    <form action={{url_for("overview")}}>
+    <input type="submit" value="Oversikt" />
+    </form>
+
+    <p id="test"></p>
+
+
+</body>
+{%  endblock content %}

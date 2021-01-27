@@ -1,0 +1,24 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<html lang="en">
+<head>
+    <title>Barcode</title>
+    <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+
+<br/>
+    <form action="/temp" method="post">
+        <input type="submit" value="Neste">
+        <br/><br/>
+        <h5>{{ shelf.split(".")[0].replace("_", " ").upper() }}</h5>
+        <input type="hidden" name="shelf" value="{{shelf.split(".")[0].replace("_", " ").upper()}}"/>
+        <br/><br/>
+        Strekkode:<br/>
+        <input name="code" autofocus="autofocus" maxlength="13"/><br/>
+
+    </form>
+
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<html lang="en">
+<head>
+    <title>Oversikt</title>
+    <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h1>{{ shelf.split(".")[0].replace("_", " ").upper() }}</h1>
+<p>Antall varer: {{ len }}</p>
+<br/>
+
+<form action="/barcode/{{shelf}}">
+    <input type="submit" value="Legg til flere varer" />
+    </form>
+
+<br/><br/><br/>
+    {%for i in range(0, len) %}
+    <h5 style='text-align: center;'>{{file[i][2]}}</h5>
+    <div style='text-align: center;'>
+  <!-- insert your custom barcode setting your data in the GET parameter "data" -->
+  <img alt='Barcode Generator TEC-IT'
+       src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/>
+</div>
+        <p>{{file[i][1]}}</p>
+    <p style='text-align: center;'>Antall: {{file[i][3]}}</p>
+        <form action="/remove_item" name="{{file[i][0]}}" method="post">
+    <input type="submit" name="{{file[i][0]}}" value="Slett vare">
+          <input type="hidden" name="{{shelf}}" value="{{file[i][0]}}">
+<br/><br/><br/><br/>
+</form>
+
+{%endfor%}
+<form action="/move_done" method="post">
+    <input type="submit" onclick="alert('Hyllen er merket som ferdig og flyttet')" name={{ shelf }} value="Ferdig?">
+
+</form>
+Trykker du "Ferdig" har du ikke lenger<br/>
+mulighet til å legge til flere varer
+
+
+</body>
+</html>
+{% endblock content %}

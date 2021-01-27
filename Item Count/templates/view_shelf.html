@@ -1,0 +1,34 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Oversikt</title>
+    <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h1>{{ shelf.split(".")[0].replace("_", " ").upper()}}</h1>
+<p>Antall varer: {{ len }}</p>
+<br/>
+<br/>
+    {%for i in range(0, len) %}
+    <h5 style='text-align: center;'>{{file[i][2]}}</h5>
+    <div style='text-align: center;'>
+
+  <!-- insert your custom barcode setting your data in the GET parameter "data" -->
+  <img alt='Barcode Generator TEC-IT'
+       src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/><br/>
+
+</div>
+    <p>{{file[i][1]}}</p>
+    <p style='text-align: center;'>Antall: {{file[i][3]}}</p>
+        <br/><br/>
+{%endfor%}
+
+<form action="/move_ferdig" method="post">
+    <input type="submit" name={{ shelf }} value="Ferdig?">
+
+</form>
+</body>
+</html>
+{%  endblock content %}

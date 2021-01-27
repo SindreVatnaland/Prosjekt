@@ -1,0 +1,19 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<html lang="en">
+<head>
+    <title>Oversikt</title>
+    <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<br/>
+<form action="/deleting_every_shelf" method="post">
+    <input name=hylle value="" autofocus="autofocus"><br/><br/>
+    <input type="submit" name=hylle value="Bekreft">
+
+</form>
+Skriv "byggmix" for å bekrefte<br/>
+
+</body>
+</html>
+{% endblock content %}

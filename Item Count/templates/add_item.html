@@ -1,0 +1,40 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<html lang="en">
+<head>
+    <title>Legg til vare</title>
+    <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+
+<br/>
+    <form action="/add_item/{{ shelf }}&{{ code }}" method="post">
+        <input type="submit" value="Legg til vare">
+
+        <input type="hidden" name="shelf" value="{{shelf}}" /><br/>
+
+        <input type="hidden" name="barcode" value="{{ code }}" maxlength="13"/>
+        {% if len <= 0 %}
+            <br/><br/>
+        Varen har ikke et navn<br/> Legg til varenavn:
+        <br/>
+        <input name="name" value="{{name}}" maxlength="30" /><br/>
+            {% elif len2 < 13 %}
+            <br/><br/>
+            Varenavn:<br/>
+            <input name="name" value="{{name}}" maxlength="40" /><br/>
+            {% else %}
+            <br/>
+            <h5>{{ name }}</h5>
+            <input type="hidden" name="name" value="{{name}}" maxlength="30" /><br/>
+        {% endif %}
+        Antall:<br/>
+        <input type="number" name="value" autofocus="autofocus" value="" maxlength="10"/><br/>
+
+
+
+    </form>
+
+</body>
+</html>
+{% endblock content %}
