@@ -29,7 +29,3 @@ its respected item name to the app.
   
 When done you can enter the "/delete_all" url and confirm to delete
 every stored shelve (even the backup), ready for a new round of counting.
-
-
-
-

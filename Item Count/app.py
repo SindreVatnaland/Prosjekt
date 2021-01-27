@@ -64,7 +64,6 @@ def counting():
     for _, value in request.form.items():
         for j in range(len(symbols)):
             value = value.strip(symbols[j])
-            print(value)
         if value.split(".")[0].lower() != value.lower():
             break
         if (value.strip(" ").replace(" ", "_").lower() + ".txt") not in done_shelves and (value.strip(" ").replace(" ", "_").lower() + ".txt") not in working_shelves and (value.strip(" ").replace(" ", "_").lower() + ".txt") not in ferdig_shelves:
