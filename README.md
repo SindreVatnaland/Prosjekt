@@ -1,1 +1,22 @@
-# Prosjekt
+# My projects
+
+##1# Sudoku:
+Sudoku with 3 difficulties  
+Play by entering x/y coordinates and a value (0-9)
+
+##2# Flappy Bird
+A recreation of Flappy Bird in PyGame
+
+##3# Tower Defense
+Tower Defense game inspired by Bloons  
+Attack incoming enemies by clicking on them or by placing turrets.  
+Defeating enemies and completing waves grants you bonus coins.  
+Each wave gets progressively more difficult.  
+(Little to no models and no attack animation - black borders)  
+
+##4# Item counting
+An web-app developed for my current job.  
+Its purpose is to make item counting each year more intuitive by
+making it possible to register items with your phone, using a bluetooth barcode scanner, 
+and add a quantity to the item.  
+Detailed description in the "Item count" folder.

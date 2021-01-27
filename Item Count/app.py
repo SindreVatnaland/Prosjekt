@@ -161,7 +161,7 @@ def move_ferdig():
         remove(done_path+f"/{i}")
     return render_template("home.html")
 
-@app.route('/fil', methods=["GET", "POST"])
+@app.route('/backup', methods=["GET", "POST"])
 def hidden():
     ferdig_shelves = [f for f in listdir(ferdig_path) if isfile(join(ferdig_path, f))]
     return render_template("overview.html", len = len(ferdig_shelves), shelves = ferdig_shelves)

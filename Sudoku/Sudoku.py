@@ -57,7 +57,7 @@ class Sudoku:
                     print("Invalid location, try again!")
                     continue
                 value = int(input("Enter a number trough 0 and 9:\n> "))
-                if value == 69:
+                if value == 2020:
                     self.solve()
                     break
                 if value not in self.comfirm:
