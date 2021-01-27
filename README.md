@@ -16,7 +16,7 @@ Each wave gets progressively more difficult.
 
 ##4# Item counting  
 An web-app developed for my current job.  
-Its purpose is to make item counting each year more intuitive by
-making it possible to register items with your phone, using a bluetooth barcode scanner, 
-and add a quantity to the item.  
-Detailed description in the "Item count" folder.
+Its purpose is to make item counting more intuitive. 
+This by making it possible to register items with your phone, using a bluetooth barcode scanner, 
+rather than bringing item to the counter physically.  
+Detailed readme in the "Item count" folder.
