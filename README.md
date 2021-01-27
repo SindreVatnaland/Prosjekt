@@ -9,7 +9,7 @@ A recreation of Flappy Bird in PyGame.
 
 ##3# Tower Defense  
 Tower Defense game inspired by Bloons  
-Attack incoming enemies by clicking on them or by placing turrets.  
+Attack incoming enemies by clicking on them or by placing turrets nearby.  
 Defeating enemies and completing waves grants you bonus coins.  
 Each wave gets progressively more difficult.  
 (Little to no models and no attack animation - black borders).
