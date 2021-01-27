@@ -1,6 +1,6 @@
 # My projects
 
-##1# Sudoku:
+##1# Sudoku:  
 Sudoku with 3 difficulties  
 Play by entering x/y coordinates and a value (0-9)
 
