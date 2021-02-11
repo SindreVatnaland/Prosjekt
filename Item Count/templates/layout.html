@@ -2,17 +2,104 @@
 <html lang="en">
 <link rel="icon" href="https://is5-ssl.mzstatic.com/image/thumb/Purple114/v4/8f/67/5a/8f675ade-4a6b-f808-d72d-f557d5c7ab47/source/256x256bb.jpg">
 <head>
+    <style>body{
+            display: flex;
+            height: 100vh;
+            flex-wrap: wrap;
 
+        }
+
+        .info {
+            color: #F5F5F5;
+        }
+
+        .item_container{
+            border: 1px solid black;
+            margin-bottom: 5em;
+        }
+
+        .item_container *{
+            margin: 5px;
+        }
+
+        #bottom{
+            position: sticky;
+            color: #F5F5F5;
+            text-decoration: underline #F5F5F5;
+            background: #364F6B;
+        }
+
+
+
+        #container{
+            height: 100%;
+        }
+
+        a:link{
+            text-decoration: none;
+            color: #F5F5F5
+        }
+
+        #home{
+            border-bottom: 2px solid #F5F5F5;
+            padding: 5px;
+            text-decoration: none;
+            color: #F5F5F5
+        }
+
+        #home:hover{
+            background: #3FC1C9;
+            text-decoration: underline;
+            color: #F5F5F5
+        }
+
+        #choice {
+            margin-bottom: 20px;
+
+        }
+
+        .h1_button{
+            color: #F5F5F5;
+            text-decoration: underline #F5F5F5;
+        }
+
+        .h1_button:hover {
+            background: #3FC1C9;
+            text-decoration: underline;
+            color: #F5F5F5
+        }
+
+        h1 {
+
+        }
+
+        h3{
+            padding: 5px;
+            text-decoration: none;
+            color: #F5F5F5
+        }
+
+        h3:hover{
+            background: #3FC1C9;
+            text-decoration: underline;
+            color: #F5F5F5
+        }
+
+
+    </style>
 </head>
-<meta name="viewport" content="initial-scale=1.2, maximum-scale=1.2">
-<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+
+<meta name="viewport" content="initial-scale=1.2, maximum-scale=1.2">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <div style='text-align: center' class="container">
     <br/>
-<form action={{url_for("main")}}>
-    <input type="submit" value="Hjem" />
-    </form>
+
+<a href={{url_for("main")}} >
+    <h1 id="home">
+        Hjem
+    </h1>
+</a>
 <br/>
     {%  block content %}{% endblock %}
 </div>

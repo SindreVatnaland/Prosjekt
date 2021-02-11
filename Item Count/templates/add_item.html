@@ -3,32 +3,35 @@
 <html lang="en">
 <head>
     <title>Legg til vare</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
 </head>
 <body>
 
-<br/>
     <form action="/add_item/{{ shelf }}&{{ code }}" method="post">
-        <input type="submit" value="Legg til vare">
+        <input type="submit" value="Legg til vare" hidden>
 
         <input type="hidden" name="shelf" value="{{shelf}}" /><br/>
 
         <input type="hidden" name="barcode" value="{{ code }}" maxlength="13"/>
         {% if len <= 0 %}
             <br/><br/>
-        Varen har ikke et navn<br/> Legg til varenavn:
-        <br/>
-        <input name="name" value="{{name}}" maxlength="30" /><br/>
+        <p class="info">Varen er ikke registrert</p>
+        <p class="info">Legg til varenavn:</p>
+        <input name="name" value="{{name}}" maxlength="30" /><br/><br/>
             {% elif len2 < 13 %}
-            <br/><br/>
-            Varenavn:<br/>
-            <input name="name" value="{{name}}" maxlength="40" /><br/>
+
+            <p class="info">Varenavn:</p>
+            <input name="name" value="{{name}}" maxlength="40" /><br/><br>
             {% else %}
             <br/>
-            <h5>{{ name }}</h5>
+            <h5 class="info">{{ name }}</h5>
             <input type="hidden" name="name" value="{{name}}" maxlength="30" /><br/>
         {% endif %}
-        Antall:<br/>
+        <p class="info">Antall:</p>
         <input type="number" name="value" autofocus="autofocus" value="" maxlength="10"/><br/>
 
 

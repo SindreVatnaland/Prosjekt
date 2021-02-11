@@ -1,9 +1,14 @@
 {%  extends "layout.html" %}
 {%  block content %}
 <head>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
     <title>Ny hylle</title>
 </head>
-    <h1>Ny hylle</h1><br/>
+    <h1 class="info" style="margin-top: 10%;">Ny hylle</h1><br/>
 <body>
     <form action="/counting" method="post">
     <input name="this_name" value="Hylle 1" maxlength="15"/><br/><br/>

@@ -3,25 +3,30 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <head>
     <title>Oversikt</title>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Oversikt:</h1>
+    <h1 style="margin-top: 10%;" class="info">Oversikt:</h1>
     {% if len > 0 %}
     {%for i in range(0, len)%}
 
-    <p></p>
-    <form action=/overview/{{shelves[i]}}>
-    <input type="submit" value="{{shelves[i].split(".")[0].replace("_", " ").upper()}}" />
-    </form>
+    <a href="/overview/{{shelves[i]}}" >
+        <h1 class="h1_button">
+            {{shelves[i].split('.')[0].replace('_', ' ').upper()}}
+        </h1>
+    </a>
 
 {%endfor%}
 {% else %}
-        <p>Ingen ferdige hyller!</p>
-        <img src="https://i.imgur.com/0MwxIWU.jpg" alt="Ordin" style="width: 150px; min-width: 320px;">
+        <p class="info">Ingen nye hyller!</p>
+        <img src="https://i.imgur.com/0MwxIWU.jpg" alt="Ordin" style="width: 80%; min-width: 320px; margin-bottom: 5%;">
 {% endif %}
 </body>
 </html>

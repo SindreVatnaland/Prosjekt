@@ -42,6 +42,8 @@ def make_folders():
         os.makedirs('ferdig')
     if not os.path.exists('files'):
         os.makedirs('files')
+    if not os.path.exists('barcodes'):
+        os.makedirs('barcodes')
 
 def setup():
     make_folders()

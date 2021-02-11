@@ -2,17 +2,21 @@
 {%  block content %}
 <html lang="en">
 <head>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
     <title>Oversikt</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
 </head>
 <body>
-<br/>
+<h1 style="margin-top: 10%;" class="info">Slett alt</h1>
 <form action="/deleting_every_shelf" method="post">
-    <input name=hylle value="" autofocus="autofocus"><br/><br/>
+    <input placeholder="byggmix" name=hylle value="" autofocus="autofocus"><br/><br/>
     <input type="submit" name=hylle value="Bekreft">
 
 </form>
-Skriv "byggmix" for å bekrefte<br/>
+<p class="info">Skriv "byggmix" for å bekrefte</p>
 
 </body>
 </html>

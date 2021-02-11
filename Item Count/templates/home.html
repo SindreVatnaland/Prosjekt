@@ -2,21 +2,28 @@
 {%  block content %}
 
     <head>
+        <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
     <title>Hjem</title>
     </head>
-<body>
-    <h1>Velg:</h1>
+<body class="body">
 
-    <form action={{url_for("counting")}}>
-    <input type="submit" value=" Telling " />
-    </form>
-    <p></p>
-    <form action={{url_for("overview")}}>
-    <input type="submit" value="Oversikt" />
-    </form>
+    <a href={{url_for("counting")}} >
+        <h1 class="h1_button" style="margin-top: 10%;">
+            Telling
+        </h1>
+    </a>
+    <a href={{url_for("overview")}} >
+        <h1 class="h1_button">
+            Oversikt
+        </h1>
+    </a>
 
     <p id="test"></p>
 
 
-</body>
+</body >
 {%  endblock content %}

@@ -2,18 +2,23 @@
 {%  block content %}
 <html lang="en">
 <head>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
     <title>Fjern hylle</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
 </head>
 <body>
-<h1>Slett hylle</h1>
+<h1 class="info">Fjern hylle</h1>
 <br/>
 <form action="/deleting_shelf" method="post">
-    <input name=hylle value="" autofocus="autofocus"><br/><br/>
-    <input type="submit" name=hylle value="Bekreft">
+    <input placeholder="Hylle 1" name=hylle value="" autofocus="autofocus"><br/><br/>
+    <input type="submit" name=hylle value="Bekreft" hidden>
 
-</form>
-Skriv hyllenavn (ex: Hylle 1) for å bekrefte<br/>
+</form><br/>
+
+<p class="info">Skriv inn hyllenavn for å bekrefte</p>
 
 </body>
 </html>

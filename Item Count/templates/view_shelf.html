@@ -1,32 +1,38 @@
 {%  extends "layout.html" %}
 {%  block content %}
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <title>Oversikt</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
 </head>
 <body>
-<h1>{{ shelf.split(".")[0].replace("_", " ").upper()}}</h1>
-<p>Antall varer: {{ len }}</p>
-<br/>
+<h1 style="margin-top: 10%;" class="info">{{ shelf.split(".")[0].replace("_", " ").upper()}}</h1>
+<p class="info">Antall varer: {{ len }}</p>
 <br/>
     {%for i in range(0, len) %}
-    <h5 style='text-align: center;'>{{file[i][2]}}</h5>
+<div class="item_container">
+    <h5 class="info" style='text-align: center;'>{{file[i][2]}}</h5>
     <div style='text-align: center;'>
-
-  <!-- insert your custom barcode setting your data in the GET parameter "data" -->
+        {% if file[i][1]|length == 13 %}
   <img alt='Barcode Generator TEC-IT'
-       src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/><br/>
-
+       src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/>
+        {% endif %}
 </div>
-    <p>{{file[i][1]}}</p>
-    <p style='text-align: center;'>Antall: {{file[i][3]}}</p>
-        <br/><br/>
+        <p class="info" >{{file[i][1]}}</p>
+    <p class="info" style='text-align: center;'>Antall: {{file[i][3]}}</p>
+        <form action="/remove_item" name="{{file[i][0]}}" method="post">
+
+</form>
+</div>
 {%endfor%}
 
 <form action="/move_ferdig" method="post">
-    <input type="submit" name={{ shelf }} value="Ferdig?">
+    <input type="submit" name={{ shelf }} value="Ferdig" style="margin-bottom: 5%;">
 
 </form>
 </body>

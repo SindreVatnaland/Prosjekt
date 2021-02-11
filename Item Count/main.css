@@ -20,3 +20,11 @@ p {
     font-size: 200px;
     font-weight: 300;
 }
+
+body {
+    background-color: #364F6B;
+}
+
+h1 {
+    color: blue;
+}
