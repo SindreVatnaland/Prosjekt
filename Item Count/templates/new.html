@@ -30,7 +30,7 @@
        src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/>
         {% endif %}
 </div>
-        <p class="info" >{{file[i][1]}}</p>
+        <p class="info" >EAN: {{file[i][1]}}</p>
     <p class="info" style='text-align: center;'>Antall: {{file[i][3]}}</p>
         <form action="/remove_item" name="{{file[i][0]}}" method="post">
     <input type="submit" name="{{file[i][0]}}" value="Slett vare">
@@ -40,9 +40,10 @@
 </div>
 {%endfor%}
 <form action="/move_done" method="post">
-    <input type="submit" value="Ferdig">
+    <input type="submit" name={{ shelf }} value="Ferdig">
 
 </form>
+
 <p class="info" >
     Trykker du "Ferdig" har du ikke lenger<br/>
     mulighet til å legge til flere varer
