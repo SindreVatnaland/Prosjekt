@@ -11,20 +11,20 @@
     </style>
 </head>
 <body>
-<h1 style="margin-top: 5%;" class="info">{{ shelf.split(".")[0].replace("_", " ").upper()}}</h1>
-<p class="info">Antall varer: {{ len }}</p>
+<h1 style="margin-top: 5%; font-size: 2em" class="info">{{ shelf.split(".")[0].replace("_", " ").upper()}}</h1>
+<p class="info" style='text-align: center; font-size: 2em;'>Antall varer: {{ len }}</p>
 <br/>
     {%for i in range(0, len) %}
 <div class="item_container">
-    <h5 class="info" style='text-align: center;'>{{file[i][2]}}</h5>
+    <h5 class="info" style='text-align: center; font-size: 2em;'>{{file[i][2]}}</h5>
     <div style='text-align: center;'>
         {% if file[i][1]|length == 13 %}
   <img alt='Barcode Generator TEC-IT'
        src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/>
         {% endif %}
 </div>
-        <p class="info" >EAN: {{file[i][1]}}</p>
-    <p class="info" style='text-align: center;'>Antall: {{file[i][3]}}</p>
+        <p class="info" style='text-align: center; font-size: 2em;'>EAN: {{file[i][1]}}</p>
+    <p class="info" style='text-align: center; font-size: 2em;'>Antall: {{file[i][3]}}</p>
         <form action="/remove_item" name="{{file[i][0]}}" method="post">
 
 </form>
