@@ -16,8 +16,11 @@
         Ny hylle
     </h1>
 </a>
+{% if len > 0 %}
     <h1 style="margin-top: 10%;" class="info">Oversikt:</h1>
+{% endif %}
     {%for i in range(0, len)%}
+
 
 <a href=/counting/{{shelves[i]}}>
     <h1 class="h1_button">
