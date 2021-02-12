@@ -2,6 +2,7 @@ import numpy as np
 import copy
 import pickle
 import os
+import requests
 from os import listdir, remove
 from os.path import isfile, join
 from flask import Flask, render_template, url_for, request, flash
@@ -104,6 +105,13 @@ def temp():
         elif i == "code":
             code += value
     if code in dictionary:
+        # url = f'https://barcode.tec-it.com/barcode.ashx?data={code}&code=EAN13'
+        # page = requests.get(url)
+        #
+        # f_ext = os.path.splitext(url)[-1]
+        # f_name = "barcodes/{code}.jpg"
+        # with open(f_name, 'wb') as f:
+        #     f.write(page.content)
         name = dictionary[code]
     return render_template("add_item.html", shelf=shelf, code=code, name=name, len=len(name), len2=len(code))
 
