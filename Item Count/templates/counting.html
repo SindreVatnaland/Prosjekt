@@ -12,11 +12,11 @@
 </head>
 <body>
 <a href={{url_for("new_shelf")}} >
-    <h1 class="h1_button" style="margin-top: 10%;">
+    <h1 class="h1_button" style="margin-top: 5%;">
         Ny hylle
     </h1>
 </a>
-<br/>
+    <h1 style="margin-top: 10%;" class="info">Oversikt:</h1>
     {%for i in range(0, len)%}
 
 <a href=/counting/{{shelves[i]}}>
@@ -26,7 +26,6 @@
 </a>
 
 {%endfor%}
-<br/><br/><br/>
 
 <div class="bottom">
     <a href={{url_for("delete_shelf")}}>

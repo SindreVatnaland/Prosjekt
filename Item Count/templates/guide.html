@@ -1,0 +1,34 @@
+{%  extends "layout.html" %}
+{%  block content %}
+
+    <head>
+        <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
+    <title>Guide</title>
+    </head>
+<body class="body">
+
+<a href={{url_for("guide_telling")}}>
+    <h1 class="guide_buttons">
+        Guide for telling
+    </h1>
+</a>
+
+<a  href={{url_for("guide_oversikt")}}>
+    <h1 class="guide_buttons">
+        Guide for oversikt
+    </h1>
+</a>
+
+<a href={{url_for("guide_nytt")}}>
+    <h1 class="guide_buttons">
+        Guide for oppstart
+    </h1>
+</a>
+
+
+</body >
+{%  endblock content %}

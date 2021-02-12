@@ -245,5 +245,21 @@ def upload_file():
         func.update_dictionary()
     return render_template("home.html")
 
+@app.route('/guide')
+def guide():
+    return render_template('guide.html')
+
+@app.route('/guide_telling')
+def guide_telling():
+    return render_template('guide_telling.html')
+
+@app.route('/guide_oversikt')
+def guide_oversikt():
+    return render_template('guide_oversikt.html')
+
+@app.route('/guide_nytt')
+def guide_nytt():
+    return render_template('guide_nytt.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
