@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1 style="margin-top: 5%;" class="info">{{ shelf.split(".")[0].replace("_", " ").upper() }}</h1>
-<p class="info">Antall varer: {{ len }}</p>
+<p class="info" style='text-align: center; font-size: 1.5em;'>Antall varer: {{ len }}</p>
 <br/>
 
 <a href="/barcode/{{shelf}}" >
@@ -28,10 +28,12 @@
         {% if file[i][1]|length == 13 %}
   <img alt='Barcode Generator TEC-IT'
        src='https://barcode.tec-it.com/barcode.ashx?data={{file[i][1]}}&code=EAN13'/>
-        {% endif %}
-</div>
+    <p class="info" style='text-align: center; font-size: 1em;'>EAN: {{file[i][1]}}</p>
+        {% else %}
         <p class="info" style='text-align: center; font-size: 2em;'>EAN: {{file[i][1]}}</p>
-    <p class="info" style='text-align: center; font-size: 2em;'>Antall: {{file[i][3]}}</p>
+    {% endif %}
+        </div>
+    <p class="info" style='text-align: center; font-size: 1.5em;'>Antall: {{file[i][3]}}</p>
         <form action="/remove_item" name="{{file[i][0]}}" method="post">
     <input type="submit" name="{{file[i][0]}}" value="Slett vare">
           <input type="hidden" name="{{shelf}}" value="{{file[i][0]}}">
