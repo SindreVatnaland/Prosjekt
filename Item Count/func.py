@@ -9,19 +9,15 @@ def update_dictionary():
     loc = ("files/vareliste.xls")
     folder_loc = "files/"
     folder = [f for f in listdir(folder_loc) if isfile(join(folder_loc, f))]
-    dictionary = np.load('my_file.npy',allow_pickle='TRUE').item()
+    dictionary = np.load('my_file.npy', allow_pickle='TRUE').item()
     try:
         wb = xlrd.open_workbook(loc)
         sheet = wb.sheet_by_index(0)
         sheet.cell_value(0, 0)
         for i in range(sheet.nrows):
-            print(str(sheet.cell_value(i, 0)))
             ean = (str(sheet.cell_value(i, 0))[0:-2])
-            print(ean)
             name = (str(sheet.cell_value(i, 6)))
-            print(name)
             name2 = (str(sheet.cell_value(i, 7)))
-            print(name2)
 
             dictionary[ean] = name+" "+name2
 

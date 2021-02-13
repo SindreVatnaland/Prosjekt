@@ -239,10 +239,12 @@ def index():
 
 @app.route('/uploader', methods=['POST'])
 def upload_file():
+    global dictionary
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
         uploaded_file.save("files/"+uploaded_file.filename)
         func.update_dictionary()
+    dictionary = np.load('my_file.npy', allow_pickle='TRUE').item()
     return render_template("home.html")
 
 @app.route('/guide')
