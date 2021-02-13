@@ -15,9 +15,13 @@ def update_dictionary():
         sheet = wb.sheet_by_index(0)
         sheet.cell_value(0, 0)
         for i in range(sheet.nrows):
+            print(str(sheet.cell_value(i, 0)))
             ean = (str(sheet.cell_value(i, 0))[0:-2])
+            print(ean)
             name = (str(sheet.cell_value(i, 6)))
+            print(name)
             name2 = (str(sheet.cell_value(i, 7)))
+            print(name2)
 
             dictionary[ean] = name+" "+name2
 
