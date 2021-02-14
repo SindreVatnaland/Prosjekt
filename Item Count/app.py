@@ -263,5 +263,9 @@ def guide_oversikt():
 def guide_nytt():
     return render_template('guide_nytt.html')
 
+@app.route('/send_varer')
+def send_varer():
+    return render_template('send_varer.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
