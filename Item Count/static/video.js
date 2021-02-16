@@ -8,6 +8,22 @@ var videoOption = document.getElementById('videoOption');
 var buttonGo = document.getElementById('go');
 var barcode_result = document.getElementById('dbr');
 
+ navigator.permissions.query({name: 'microphone'})
+ .then((permissionObj) => {
+  console.log(permissionObj.state);
+ })
+ .catch((error) => {
+  console.log('Got error :', error);
+ })
+
+ navigator.permissions.query({name: 'camera'})
+ .then((permissionObj) => {
+  console.log(permissionObj.state);
+ })
+ .catch((error) => {
+  console.log('Got error :', error);
+ })
+
 var isPaused = false;
 var videoWidth = 640,
   videoHeight = 480;
@@ -157,6 +173,8 @@ function scanBarcode() {
     setTimeout(scanBarcode, 30);
   }
 }
+
+navigator.mediaDevices.getUserMedia({video: true});
 // https://github.com/samdutton/simpl/tree/gh-pages/getusermedia/sources 
 var videoSelect = document.querySelector('select#videoSource');
 

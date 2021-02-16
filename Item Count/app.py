@@ -7,6 +7,9 @@ from os import listdir, remove
 from os.path import isfile, join
 from flask import Flask, render_template, url_for, request, flash
 import func
+from OpenSSL import SSL
+
+
 
 UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = {'xls'}
@@ -268,4 +271,4 @@ def send_varer():
     return render_template('send_varer.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", ssl_context=('cert.pem', 'key.pem'))
