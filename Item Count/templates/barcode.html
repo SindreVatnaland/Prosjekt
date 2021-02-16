@@ -8,8 +8,8 @@
         }
     </style>
     <title>Barcode</title>
-    <script src="../js/jquery-1.11.3.min.js"></script>
 
+<script src="{{url_for('static', filename='jquery-1.11.3.min.js')}}"></script>
 
 </head>
 <body>
@@ -36,12 +36,14 @@
   <div class="select" hidden>
     <label for="videoSource">Video source: </label><select id="videoSource"></select>
   </div>
-  <button hidden id="go">Scan</button>
+  <button hidden id="go" style="margin-top: 5%;">Scan</button>
 
 
 
 </body>
 
-<script async src="../js/zxing.js"></script>
-<script src="../js/video.js"></script>
+
+<script async src="{{ url_for('static', filename='zxing.js') }}"></script>
+<script src="{{ url_for('static', filename='video.js') }}"></script>
+
 {% endblock content %}
