@@ -1,0 +1,29 @@
+{%  extends "layout.html" %}
+{%  block content %}
+<html lang="en">
+<head>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
+    <title>Barcode</title>
+
+</head>
+<body>
+
+    <form action="/temp" method="post">
+        <input type="submit" value="Neste" hidden>
+        <a href="/counting/{{ shelf }}">
+            <h1 style="margin-top: 10%;" class="h1_button">{{ shelf.split(".")[0].replace("_", " ").upper() }}</h1>
+        </a>
+        <input type="hidden" name="shelf" value="{{shelf.split('.')[0].replace('_', ' ').upper()}}"/>
+        <br/><br/>
+        <p class="info">Strekkode:</p>
+        <input type="number" name="code" autofocus="autofocus" maxlength="13"/><br/>
+
+    </form>
+
+</body>
+</html>
+{% endblock content %}
