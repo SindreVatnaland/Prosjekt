@@ -31,10 +31,9 @@ tick();
 var decodeCallback = function (ptr, len, resultIndex, resultCount) {
   var result = new Uint8Array(ZXing.HEAPU8.buffer, ptr, len);
   console.log(String.fromCharCode.apply(null, result));
-  barcode_result.textContent = String.fromCharCode.apply(null, result);
   document.getElementById("input_ean").value = String.fromCharCode.apply(null, result);
   document.getElementById("submit_ean").click();
-  buttonGo.disabled = false;
+  buttonGo.disabled = true;
   if (isPC) {
     canvas.style.display = 'block';
   } else {
@@ -91,6 +90,7 @@ function dataURItoBlob(dataURI) {
   });
 }
 
+setTimeout(() => {  document.getElementById("go").hidden = false; }, 1000);
 // add button event
 buttonGo.onclick = function () {
   document.getElementById("video").hidden = false;
@@ -101,13 +101,12 @@ buttonGo.onclick = function () {
   }
 
   isPaused = false;
-  setTimeout(() => {  scanBarcode(); }, 1500);
-  buttonGo.disabled = true;
+  setTimeout(() => {  scanBarcode(); }, 1000);
+  buttonGo.disabled = false;
 };
 
 // scan barcode
 function scanBarcode() {
-  barcode_result.textContent = "";
 
   if (ZXing == null) {
     buttonGo.disabled = false;

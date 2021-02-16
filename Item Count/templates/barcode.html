@@ -10,17 +10,13 @@
     <title>Barcode</title>
     <script src="../js/jquery-1.11.3.min.js"></script>
 
+
 </head>
 <body>
 <a href="/counting/{{ shelf }}">
             <h1 style="margin-top: 10%;" class="h1_button">{{ shelf.split(".")[0].replace("_", " ").upper() }}</h1>
         </a>
 
-
-  <div class="select" hidden>
-    <label for="videoSource">Video source: </label><select id="videoSource"></select>
-  </div>
-  <button id="go">Scan</button>
   <div>
     <video hidden muted autoplay id="video" playsinline="false"></video>
     <canvas id="pcCanvas" width="640" height="480" style="display: none; float: bottom;"></canvas>
@@ -37,6 +33,15 @@
 
     </form>
 
+  <div class="select" hidden>
+    <label for="videoSource">Video source: </label><select id="videoSource"></select>
+  </div>
+  <button hidden id="go">Scan</button>
+
+
+
 </body>
-</html>
+
+<script async src="../js/zxing.js"></script>
+<script src="../js/video.js"></script>
 {% endblock content %}

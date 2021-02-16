@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="../js/jquery-1.11.3.min.js"></script>
+    <style>
+        body{
+            background: #364F6B;
+        }
+    </style>
+    <title>Barcode</title>
+    <script src="../js/jquery-1.11.3.min.js"></script>
+
+
 </head>
 <body>
-  <div>Barcode result: <span id="dbr"></span></div>
-  <div class="select" hidden>
-    <label for="videoSource">Video source: </label><select id="videoSource"></select>
-  </div>
-  <button id="go">Scan</button>
+<a href="/counting/{{ shelf }}">
+            <h1 style="margin-top: 10%;" class="h1_button">{{ shelf.split(".")[0].replace("_", " ").upper() }}</h1>
+        </a>
+
   <div>
     <video hidden muted autoplay id="video" playsinline="false"></video>
     <canvas id="pcCanvas" width="640" height="480" style="display: none; float: bottom;"></canvas>
     <canvas id="mobileCanvas" width="240" height="320" style="display: none; float: bottom;"></canvas>
   </div>
 
-
-<form action="/temp" method="post">
+    <form action="/temp" method="post">
+        <input type="submit" value="Neste" hidden>
+        <input type="hidden" name="shelf" value="{{shelf.split('.')[0].replace('_', ' ').upper()}}"/>
+        <br/><br/>
+        <p class="info">Strekkode:</p>
         <input id="input_ean" type="number" name="code" autofocus="autofocus" maxlength="13"/><br/>
         <button id="submit_ean" type="submit" hidden></button>
+
     </form>
+
+  <div class="select" hidden>
+    <label for="videoSource">Video source: </label><select id="videoSource"></select>
+  </div>
+  <button hidden id="go">Scan</button>
+
+
 
 </body>
 
