@@ -106,7 +106,7 @@ function dataURItoBlob(dataURI) {
   });
 }
 
-setTimeout(() => {  document.getElementById("go").hidden = false; }, 1000);
+setTimeout(() => {  document.getElementById("go").hidden = false; }, 3000);
 // add button event
 buttonGo.onclick = function () {
   document.getElementById("video").hidden = false;
@@ -125,8 +125,7 @@ buttonGo.onclick = function () {
 function scanBarcode() {
 
   if (ZXing == null) {
-    buttonGo.disabled = false;
-    alert("Barcode Reader is not ready!");
+    setTimeout(() => {  scanBarcode(); }, 1000);
     return;
   }
 
@@ -158,7 +157,6 @@ function scanBarcode() {
   var barcodeContext = barcodeCanvas.getContext('2d');
   var imageWidth = vid.videoWidth, imageHeight = vid.videoHeight;
   barcodeContext.drawImage(videoElement, 0, 0, imageWidth, imageHeight);
-  // read barcode
   var imageData = barcodeContext.getImageData(0, 0, imageWidth, imageHeight);
   var idd = imageData.data;
   var image = ZXing._resize(imageWidth, imageHeight);
