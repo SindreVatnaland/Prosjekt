@@ -766,6 +766,7 @@ class tower_defense:
                     self.turret_attack_state = 1
                     self.turret3_attack()
             self.delete_enemy()
+            print(self.enemies_list)
             if self.game_active:
                 self.blit(mouse, mouse_rect)
                 if len(self.enemies_list) <= 0:
