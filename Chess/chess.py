@@ -31,7 +31,7 @@ def generateBoard(board):
         for x in range(8):
             array[y][x] = getPiece(i, board)
             i += 1
-    print(array)
+    # print(array)
     return array
 
 
@@ -87,19 +87,12 @@ def movePiece(from_, to, cur_board):
         else:
             new_piece = getRouteBit(to, from_piece)
 
-        if isWhite(from_piece):
-            if isPawn(from_piece) and isPawn(getPiece(to-8, cur_board)) and isSpecial(getPiece(to-8, cur_board)):
-                cur_board = changePiece(to-8, cur_board, 0, 0)
-            if isKing(from_piece) and from_-to == 2:
-                cur_board = changePiece(to+1, cur_board, Piece.specialRook, piece_color)
-                cur_board = changePiece(to-2, cur_board, 0, piece_color)
-            elif isKing(from_piece) and from_-to == -2:
-                cur_board = changePiece(to+1, cur_board, 0, piece_color)
-                cur_board = changePiece(to-1, cur_board, Piece.specialRook, piece_color)
-
-        else:
-            if isPawn(from_piece) and (from_-to == 7 or 9) and isSpecial(getPiece(to+8, cur_board)):
-                cur_board = changePiece(to+8, cur_board, 0, 0)
+        if isKing(from_piece) and from_-to == 2:
+            cur_board = changePiece(to+1, cur_board, Piece.specialRook, piece_color)
+            cur_board = changePiece(to-2, cur_board, 0, piece_color)
+        elif isKing(from_piece) and from_-to == -2:
+            cur_board = changePiece(to+1, cur_board, 0, piece_color)
+            cur_board = changePiece(to-1, cur_board, Piece.specialRook, piece_color)
 
         mask_from_bits = mask_route(from_)
         mask_to_bits = mask_route(to)
@@ -109,11 +102,22 @@ def movePiece(from_, to, cur_board):
         cur_board = cur_board | new_piece
 
         if isWhite(from_piece):
+            if isPawn(from_piece) and isPawn(getPiece(to-8, cur_board)) and isSpecial(getPiece(to-8, cur_board)):
+                cur_board = changePiece(to-8, cur_board, 0, 0)
+            if to >= 56:
+                cur_board = changePiece(to, cur_board, Piece.queen, Color.white)
+        else:
+            if isPawn(from_piece) and (from_-to == 7 or 9) and isSpecial(getPiece(to+8, cur_board)):
+                cur_board = changePiece(to+8, cur_board, 0, 0)
+            if to <= 7:
+                cur_board = changePiece(to, cur_board, Piece.queen, Color.black)
+
+        if isWhite(from_piece):
             cur_board = undoSpecialPawns(Color.black, cur_board)
         elif not isWhite(from_piece):
             cur_board = undoSpecialPawns(Color.white, cur_board)
 
-        print(f"\nMoves piece from route {from_} to {to}")
+        # print(f"\nMoves piece from route {from_} to {to}")
 
     generateBoard(cur_board)
 
@@ -123,29 +127,29 @@ def movePiece(from_, to, cur_board):
 def isValid(from_route, cur_board):
     from_piece = getPiece(from_route, cur_board)
     if isPawn(from_piece):
-        print("pawn")
+        # print("pawn")
         moves = findPawnMoves(from_route, cur_board)
         return moves
 
 
     elif isKnight(from_piece):
-        print("knight")
+        # print("knight")
         moves = findKnightMoves(from_route, cur_board)
         return moves
 
     elif isBishop(from_piece):
-        print("bishop")
+        # print("bishop")
         moves = findStrifeMoves(from_route, cur_board)
         return moves
 
     elif isRook(from_piece):
-        print("rook")
+        # print("rook")
         moves = findStraightMoves(from_route, cur_board)
         return moves
 
 
     elif isQueen(from_piece):
-        print("queen")
+        # print("queen")
         strife = findStrifeMoves(from_route, cur_board)
         straight = findStraightMoves(from_route, cur_board)
         moves = strife + straight
@@ -153,7 +157,7 @@ def isValid(from_route, cur_board):
 
 
     elif isKing(from_piece):
-        print("king")
+        # print("king")
         moves = findKingMoves(from_route, cur_board)
         return moves
 
@@ -163,7 +167,7 @@ def findPawnMoves(from_route, cur_board):
     from_piece = getPiece(from_route, cur_board)
 
     if isWhite(from_piece):
-        print("white")
+        # print("white")
         if not getPiece(from_route+8, cur_board):
             possible.append(from_route+8)
         if from_route in range(8, 16) and not (getPiece(from_route+8, cur_board) or getPiece(from_route+16, cur_board)):
@@ -177,7 +181,7 @@ def findPawnMoves(from_route, cur_board):
         if getPiece(from_route+1, cur_board) == Piece.specialPawn | Color.black and not from_route % 8 == 7:
             possible.append(from_route+9)
     else:
-        print("black")
+        # print("black")
         if not getPiece(from_route-8, cur_board):
             possible.append(from_route-8)
         if from_route in range(48, 56) and not (getPiece(from_route-8, cur_board) or getPiece(from_route-16, cur_board)):

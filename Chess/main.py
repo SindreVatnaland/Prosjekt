@@ -1,8 +1,12 @@
 import pygame, sys, random
 import chess
+import bot
 
 pygame.mixer.pre_init(frequency = 44100, size = 32, channels = 1, buffer = 1024)
 pygame.init()
+
+place_sound = pygame.mixer.Sound("sounds/place.wav")
+place_sound.set_volume(0.025)
 
 width = 512
 height = 512
@@ -42,6 +46,7 @@ class Chess:
         self.turn = chess.Color.white
 
         self.game_status = True
+        self.bot = False
         self.create_highlights()
         self.create_board_pieces()
         self.play_game()
@@ -125,6 +130,7 @@ class Chess:
         self.attacking_squares = []
         self.piece_from = None
         self.piece_to = None
+        place_sound.play()
         if self.turn == chess.Color.white:
             self.turn = chess.Color.black
         else:
@@ -141,15 +147,21 @@ class Chess:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.check_click_collision(mouse_rect)
+            if self.bot:
+                if self.turn == chess.Color.black:
+                    from_, to = (bot.find_move(self.board, chess.Color.black))
+                    print(from_, to)
+                    self.board = chess.movePiece(from_, to, self.board)
+                    self.create_board_pieces()
+                    self.attacking_squares = []
+                    self.piece_from = None
+                    self.piece_to = None
+                    self.change_turn()
             if self.game_status:
                 self.blit()
 
-
-            pygame.time.Clock().tick(30)
+            pygame.time.Clock().tick(60)
             pygame.display.update()
-
-
-
 
 
 if __name__ == '__main__':
