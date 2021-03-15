@@ -101,12 +101,12 @@ def movePiece(from_, to, cur_board):
         cur_board = cur_board & mask
         cur_board = cur_board | new_piece
 
-        if isWhite(from_piece):
+        if isWhite(from_piece) and isPawn(from_piece):
             if isPawn(from_piece) and isPawn(getPiece(to-8, cur_board)) and isSpecial(getPiece(to-8, cur_board)):
                 cur_board = changePiece(to-8, cur_board, 0, 0)
             if to >= 56:
                 cur_board = changePiece(to, cur_board, Piece.queen, Color.white)
-        else:
+        elif not isWhite(from_piece) and isPawn(from_piece):
             if isPawn(from_piece) and (from_-to == 7 or 9) and isSpecial(getPiece(to+8, cur_board)):
                 cur_board = changePiece(to+8, cur_board, 0, 0)
             if to <= 7:

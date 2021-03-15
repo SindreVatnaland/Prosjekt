@@ -46,7 +46,7 @@ class Chess:
         self.turn = chess.Color.white
 
         self.game_status = True
-        self.bot = False
+        self.bot = True
         self.create_highlights()
         self.create_board_pieces()
         self.play_game()
@@ -136,6 +136,18 @@ class Chess:
         else:
             self.turn = chess.Color.white
 
+    def play_bot(self):
+        if self.bot:
+            if self.turn == chess.Color.black:
+                from_, to = (bot.find_move(self.board, chess.Color.black))
+                print(from_, to)
+                self.board = chess.movePiece(from_, to, self.board)
+                self.create_board_pieces()
+                self.attacking_squares = []
+                self.piece_from = None
+                self.piece_to = None
+                self.change_turn()
+
     def play_game(self):
         while True:
             mouse = pygame.mouse.get_pos()
@@ -147,21 +159,13 @@ class Chess:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.check_click_collision(mouse_rect)
-            if self.bot:
-                if self.turn == chess.Color.black:
-                    from_, to = (bot.find_move(self.board, chess.Color.black))
-                    print(from_, to)
-                    self.board = chess.movePiece(from_, to, self.board)
-                    self.create_board_pieces()
-                    self.attacking_squares = []
-                    self.piece_from = None
-                    self.piece_to = None
-                    self.change_turn()
             if self.game_status:
                 self.blit()
 
+
             pygame.time.Clock().tick(60)
             pygame.display.update()
+            self.play_bot()
 
 
 if __name__ == '__main__':
