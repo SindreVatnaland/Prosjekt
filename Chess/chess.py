@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 starting_board = 822600792108962701109752665142821874674704896976585017661690405272942910148120593644329604648004
 
@@ -65,7 +66,21 @@ def mask_route(route):
     return(all_on ^ mask_from_off) ^ piece_from_route
 
 
+def getRandomMove(board, color):
+    moves = getMoves(board, color)
+    legal_moves = []
+    for from_moves in moves:
+        for to_moves in moves[from_moves]:
+            if isCheck(movePiece(from_moves, to_moves, color), getColor(getPiece(from_moves, board))):
+                continue
+            else:
+                legal_moves.append((from_moves, to_moves))
+    move = random.choice(legal_moves)
+    return move
+
+
 def movePiece(from_, to, cur_board):
+    old_board = cur_board
     from_piece = getPiece(from_, cur_board)
     if isValid(from_, cur_board):
         if isWhite(from_piece):
@@ -120,6 +135,8 @@ def movePiece(from_, to, cur_board):
         # print(f"\nMoves piece from route {from_} to {to}")
 
     generateBoard(cur_board)
+    if isCheck(cur_board, getColor(from_piece)):
+        return old_board
 
     return cur_board
 
@@ -128,7 +145,10 @@ def getMoves(board, color):
     for route in range(64):
         if getColor(getPiece(route, board)) == color and getPiece(route, board):
             moves[route] = isValid(route, board)
-    return moves
+    sorted_moves = {}
+    for key in sorted(moves.keys()):
+        sorted_moves[key] = moves[key]
+    return sorted_moves
 
 def isCheck(board, color):
     moves = getMoves(board, changeColor(color))

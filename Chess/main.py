@@ -104,6 +104,7 @@ class Chess:
             pygame.draw.rect(display, (255, 0, 0), self.board_squares[x], 2)
 
     def check_click_collision(self, mouse_rect):
+        old_board = self.board
         for square, piece in enumerate(self.board_squares):
             if chess.getPiece(square, self.board) and mouse_rect.colliderect(piece) and self.piece_from is None and chess.getColor(chess.getPiece(square, self.board)) == self.turn:
                 self.piece_from = square
@@ -116,6 +117,8 @@ class Chess:
                 self.attacking_squares = []
                 self.piece_from = None
                 self.piece_to = None
+                if old_board == self.board:
+                    return
                 self.change_turn()
                 return
             elif mouse_rect.colliderect(piece) and not square in self.attacking_squares:
@@ -137,30 +140,37 @@ class Chess:
     def play_bot(self):
         if self.bot:
             if self.turn == chess.Color.black:
-                from_, to = (bot.find_move(self.board, chess.Color.black))
-                print(from_, to)
-                self.board = chess.movePiece(from_, to, self.board)
+                move = (bot.find_move(self.board, chess.Color.black))
+                if move == None:
+                    self.game_status = False
+                    return
+                print(move[0], move[1])
+                old_board = self.board
+                self.board = chess.movePiece(move[0], move[1], self.board)
+                if old_board == self.board:
+                    move = chess.getRandomMove(self.board, chess.Color.Black)
+                    self.board = chess.movePiece(move[0], move[1], self.board)
                 self.create_board_pieces()
                 self.attacking_squares = []
                 self.piece_from = None
                 self.piece_to = None
                 self.change_turn()
+                return
 
 
     def play_game(self):
         while True:
-            mouse = pygame.mouse.get_pos()
-            mouse_rect = pygame.Rect(mouse[0]-1, mouse[1]-1, 1, 1)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        self.check_click_collision(mouse_rect)
             if self.game_status:
-                self.blit()
-
+                mouse = pygame.mouse.get_pos()
+                mouse_rect = pygame.Rect(mouse[0]-1, mouse[1]-1, 1, 1)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            self.check_click_collision(mouse_rect)
+            self.blit()
 
             pygame.time.Clock().tick(60)
             pygame.display.update()

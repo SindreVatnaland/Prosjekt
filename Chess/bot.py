@@ -1,6 +1,5 @@
 import chess
 import math
-from time import sleep
 
 
 def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
@@ -41,7 +40,8 @@ def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
 
 
 def find_move(board, color):
-    move, score = MinMax(board, 3, color, )
+    depth = get_depth(board)
+    move, score = MinMax(board, 3, color)
     return move
 
 
@@ -73,6 +73,22 @@ def get_moves(board, color):
         if chess.getColor(chess.getPiece(piece, board)) == color and chess.getPiece(piece, board):
             moves[piece] = chess.isValid(piece, board)
     return moves
+
+def get_depth(board):
+    len_pieces = len(get_pieces(board))
+    if len_pieces > 15:
+        depth = 3
+    elif len_pieces > 10:
+        depth = 4
+    elif len_pieces > 7:
+        depth = 5
+    elif len_pieces > 5:
+        depth = 6
+    elif len_pieces > 4:
+        depth = 7
+    else:
+        depth = 8
+    return depth
 
 
 def get_pieces(board):
