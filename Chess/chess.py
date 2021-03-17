@@ -87,10 +87,10 @@ def movePiece(from_, to, cur_board):
         else:
             new_piece = getRouteBit(to, from_piece)
 
-        if isKing(from_piece) and from_-to == 2:
+        if isKing(from_piece) and from_-to == 2 and isRook(getPiece(to-2, board)) == Piece.rook:
             cur_board = changePiece(to+1, cur_board, Piece.specialRook, piece_color)
             cur_board = changePiece(to-2, cur_board, 0, piece_color)
-        elif isKing(from_piece) and from_-to == -2:
+        elif isKing(from_piece) and from_-to == -2 and isRook(getPiece(to+1, board)) == Piece.rook:
             cur_board = changePiece(to+1, cur_board, 0, piece_color)
             cur_board = changePiece(to-1, cur_board, Piece.specialRook, piece_color)
 
@@ -123,6 +123,21 @@ def movePiece(from_, to, cur_board):
 
     return cur_board
 
+def getMoves(board, color):
+    moves = {}
+    for route in range(64):
+        if getColor(getPiece(route, board)) == color and getPiece(route, board):
+            moves[route] = isValid(route, board)
+    return moves
+
+def isCheck(board, color):
+    moves = getMoves(board, changeColor(color))
+    for from_move in moves:
+        for to_move in moves[from_move]:
+            piece = getPiece(to_move, board)
+            if isKing(piece) and getColor(piece) == color:
+                return True
+    return False
 
 def isValid(from_route, cur_board):
     from_piece = getPiece(from_route, cur_board)
@@ -372,9 +387,9 @@ def findKingMoves(from_route, cur_board):
     if isKing(king) and not isSpecial(king):
         rook1 = getPiece(from_route+3, cur_board)
         rook2 = getPiece(from_route-4, cur_board)
-        if getPiece(from_route+1, cur_board) == 0 and getPiece(from_route+2, cur_board) == 0 and not isSpecial(rook1):
+        if getPiece(from_route+1, cur_board) == 0 and getPiece(from_route+2, cur_board) == 0 and (isRook(rook1) and not isSpecial(rook1)):
             possible.append(from_route+2)
-        if getPiece(from_route-1, cur_board) == 0 and getPiece(from_route-2, cur_board) == 0 and getPiece(from_route-3, cur_board) == 0 and not isSpecial(rook2):
+        if getPiece(from_route-1, cur_board) == 0 and getPiece(from_route-2, cur_board) == 0 and getPiece(from_route-3, cur_board) == 0 and (isRook(rook2) and not isSpecial(rook2)):
             possible.append(from_route-2)
     return possible
 
@@ -411,6 +426,13 @@ def isKing(piece):
 
 def getColor(piece):
     return piece & 8
+
+def changeColor(color):
+    if color == Color.white:
+        color = Color.black
+    else:
+        color = Color.white
+    return color
 
 
 def isWhite(piece):

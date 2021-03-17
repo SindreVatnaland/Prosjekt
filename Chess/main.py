@@ -8,33 +8,31 @@ pygame.init()
 place_sound = pygame.mixer.Sound("sounds/place.wav")
 place_sound.set_volume(0.025)
 
-width = 512
-height = 512
+window_size = 800
 
-display = pygame.display.set_mode((width, height))
+
+display = pygame.display.set_mode((window_size, window_size))
 clock = pygame.time.Clock()
 
-background_surface = pygame.transform.scale(pygame.image.load("assets/chessboard.png").convert(), (width, height))
-white_pawn_surface = pygame.transform.scale(pygame.image.load("assets/white_pawn.png").convert_alpha(), (60, 60))
-white_rook_surface = pygame.transform.scale(pygame.image.load("assets/white_rook.png").convert_alpha(), (60, 60))
-white_knight_surface = pygame.transform.scale(pygame.image.load("assets/white_knight.png").convert_alpha(), (60, 60))
-white_bishop_surface = pygame.transform.scale(pygame.image.load("assets/white_bishop.png").convert_alpha(), (60, 60))
-white_queen_surface = pygame.transform.scale(pygame.image.load("assets/white_queen.png").convert_alpha(), (60, 60))
-white_king_surface = pygame.transform.scale(pygame.image.load("assets/white_king.png").convert_alpha(), (60, 60))
-black_pawn_surface = pygame.transform.scale(pygame.image.load("assets/black_pawn.png").convert_alpha(), (60, 60))
-black_rook_surface = pygame.transform.scale(pygame.image.load("assets/black_rook.png").convert_alpha(), (60, 60))
-black_knight_surface = pygame.transform.scale(pygame.image.load("assets/black_knight.png").convert_alpha(), (60, 60))
-black_bishop_surface = pygame.transform.scale(pygame.image.load("assets/black_bishop.png").convert_alpha(), (60, 60))
-black_queen_surface = pygame.transform.scale(pygame.image.load("assets/black_queen.png").convert_alpha(), (60, 60))
-black_king_surface = pygame.transform.scale(pygame.image.load("assets/black_king.png").convert_alpha(), (60, 60))
-
-
-PIPESPAWN = pygame.USEREVENT
-pygame.time.set_timer(PIPESPAWN, 1550)
+background_surface = pygame.transform.scale(pygame.image.load("assets/chessboard.png").convert(), (window_size, window_size))
+white_pawn_surface = pygame.transform.scale(pygame.image.load("assets/white_pawn.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+white_rook_surface = pygame.transform.scale(pygame.image.load("assets/white_rook.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+white_knight_surface = pygame.transform.scale(pygame.image.load("assets/white_knight.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+white_bishop_surface = pygame.transform.scale(pygame.image.load("assets/white_bishop.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+white_queen_surface = pygame.transform.scale(pygame.image.load("assets/white_queen.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+white_king_surface = pygame.transform.scale(pygame.image.load("assets/white_king.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_pawn_surface = pygame.transform.scale(pygame.image.load("assets/black_pawn.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_rook_surface = pygame.transform.scale(pygame.image.load("assets/black_rook.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_knight_surface = pygame.transform.scale(pygame.image.load("assets/black_knight.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_bishop_surface = pygame.transform.scale(pygame.image.load("assets/black_bishop.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_queen_surface = pygame.transform.scale(pygame.image.load("assets/black_queen.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
+black_king_surface = pygame.transform.scale(pygame.image.load("assets/black_king.png").convert_alpha(), (int(0.117*window_size), int(0.117*window_size)))
 
 
 class Chess:
-    def __init__(self):
+    def __init__(self, window_size):
+        self.window_size = window_size
+
         self.starting_board = 822600792108962701109752665142821874674704896976585017661690405272942910148120593644329604648004
         self.board = self.starting_board
         self.board_squares = []
@@ -60,45 +58,45 @@ class Chess:
         self.board_pieces = chess.generateBoard(self.board)
 
     def draw_board_pieces(self):
-        x_axis = 19
-        y_axis = -9
+        x_axis = 0.037 * window_size
+        y_axis = -0.0175 * window_size
         for y, row in enumerate(self.board_pieces):
             for x, piece in enumerate(row):
                 if chess.isWhite(piece):
                     if chess.isPawn(piece):
-                        display.blit(white_pawn_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_pawn_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isRook(piece):
-                        display.blit(white_rook_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_rook_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isKnight(piece):
-                        display.blit(white_knight_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_knight_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isBishop(piece):
-                        display.blit(white_bishop_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_bishop_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isQueen(piece):
-                        display.blit(white_queen_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_queen_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isKing(piece):
-                        display.blit(white_king_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(white_king_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                 elif not chess.isWhite(piece):
                     if chess.isPawn(piece):
-                        display.blit(black_pawn_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_pawn_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isRook(piece):
-                        display.blit(black_rook_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_rook_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isKnight(piece):
-                        display.blit(black_knight_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_knight_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isBishop(piece):
-                        display.blit(black_bishop_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_bishop_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isQueen(piece):
-                        display.blit(black_queen_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_queen_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
                     elif chess.isKing(piece):
-                        display.blit(black_king_surface, (61*x+x_axis, 60.3*y-y_axis))
+                        display.blit(black_king_surface, (0.12*window_size*x+x_axis, 0.118*window_size*y-y_axis))
 
     def create_highlights(self):
-        y_axis = 430
+        y_axis = 0.842*window_size
         for y in range(8):
-            x_axis = 19
+            x_axis = 0.03548 * window_size
             for x in range(8):
-                self.board_squares.append(pygame.Rect(x_axis+2, y_axis+2, 56, 56))
-                x_axis += 61
-            y_axis -= 60.3
+                self.board_squares.append(pygame.Rect(x_axis+2, y_axis+2, int(0.11*window_size), int(0.11*window_size)))
+                x_axis += 0.12*window_size
+            y_axis -= 0.118*window_size
 
 
     def draw_highlights(self, list):
@@ -148,6 +146,7 @@ class Chess:
                 self.piece_to = None
                 self.change_turn()
 
+
     def play_game(self):
         while True:
             mouse = pygame.mouse.get_pos()
@@ -169,5 +168,5 @@ class Chess:
 
 
 if __name__ == '__main__':
-    game = Chess()
+    game = Chess(window_size)
 
