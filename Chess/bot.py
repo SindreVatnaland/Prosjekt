@@ -1,5 +1,7 @@
 import chess
 import math
+import numpy as np
+import random
 
 
 def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
@@ -40,8 +42,13 @@ def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
 
 
 def find_move(board, color):
-    depth = get_depth(board)
-    move, score = MinMax(board, 3, color)
+    openings = np.load('openings.npy', allow_pickle='TRUE').item()
+    try:
+        moves = openings[board]
+        move = random.choice(moves)
+    except:
+        depth = get_depth(board)
+        move, score = MinMax(board, depth, color)
     return move
 
 
@@ -49,45 +56,66 @@ def calculate_move(board):
     score = 0
     pieces = get_pieces(board)
     for piece in pieces:
-        if chess.isWhite(chess.getColor(piece)):
+        if chess.isWhite(piece[0]):
             multiply = -1
+            king = 1000
         else:
             multiply = 1
+            king = 1200
 
-        if chess.isPawn(piece):
+        if chess.isPawn(piece[0]):
             score += multiply * 10
-        elif chess.isKnight(piece) or chess.isBishop(piece):
+        elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
             score += multiply * 30
-        elif chess.isRook(piece):
+        elif chess.isRook(piece[0]):
             score += multiply * 50
-        elif chess.isQueen(piece):
+        elif chess.isQueen(piece[0]):
             score += multiply * 90
-        elif chess.isKing(piece):
-            score += multiply * 1000
+        elif chess.isKing(piece[0]):
+            score += multiply * king
+
+        if len(pieces) > 10:
+            if (2 <= piece[1] % 8 <= 5) and chess.isWhite(piece[0]) and piece[1] >= 16 and not chess.isKing(piece[1]):
+                if piece[1] % 8 == 2 or 5:
+                    score += multiply * 1
+                else:
+                    score += multiply * 2
+            elif (piece[1] % 8 == 2 or 3 or 4 or 5) and chess.isWhite(piece[0]) and piece[1] <= 48 and not chess.isKing(piece[0]):
+                if piece[1] % 8 == 2 or 5:
+                    score += multiply * 1
+                else:
+                    score += multiply * 2
+
+        #Reward king on edge, needs fix
+        elif chess.isKing(piece[0]) and len(pieces) < 10:
+            weight = -5//(len(pieces)/10)
+            if 24 <= piece[1] <= 40:
+                score += multiply * 0 * weight
+            elif (16 <= piece[1] <= 23) or (40 <= piece[1] <= 47):
+                score += multiply * 1 * weight
+            elif (8 <= piece[1] <= 15) or (48 <= piece[1] <= 55):
+                score += multiply * 2 * weight
+            elif (0 <= piece[1] <= 7) or (56 <= piece[1] <= 63):
+                score += multiply * 3 * weight
+            if 3 <= (piece[1] % 8) <= 4:
+                score += multiply * 0 * weight
+            elif piece[1] % 8 == 2 or 5:
+                score += multiply * 1 * weight
+            elif piece[1] % 8 == 1 or 6:
+                score += multiply * 3 * weight
+            elif piece[1] % 8 == 0 or 7:
+                score += multiply * 5 * weight
+    print(score)
     return score
 
 
-def get_moves(board, color):
-    moves = {}
-    for piece in range(64):
-        if chess.getColor(chess.getPiece(piece, board)) == color and chess.getPiece(piece, board):
-            moves[piece] = chess.isValid(piece, board)
-    return moves
-
 def get_depth(board):
     len_pieces = len(get_pieces(board))
-    if len_pieces > 15:
+    if len_pieces > 10:
         depth = 3
-    elif len_pieces > 10:
-        depth = 4
-    elif len_pieces > 7:
-        depth = 5
-    elif len_pieces > 5:
-        depth = 6
-    elif len_pieces > 4:
-        depth = 7
     else:
-        depth = 8
+        depth = 4
+
     return depth
 
 
@@ -96,9 +124,8 @@ def get_pieces(board):
     for i in range(64):
         piece = chess.getPiece(i, board)
         if piece:
-            pieces.append(piece)
+            pieces.append((piece, i))
     return pieces
-
 
 def change_color(color):
     if color == chess.Color.white:

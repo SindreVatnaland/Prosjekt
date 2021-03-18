@@ -102,12 +102,12 @@ def movePiece(from_, to, cur_board):
         else:
             new_piece = getRouteBit(to, from_piece)
 
-        if isKing(from_piece) and from_-to == 2 and isRook(getPiece(to-2, board)) == Piece.rook:
+        if isKing(from_piece) and from_-to == 2 and isRook(getPiece(to-2, cur_board)):
             cur_board = changePiece(to+1, cur_board, Piece.specialRook, piece_color)
-            cur_board = changePiece(to-2, cur_board, 0, piece_color)
-        elif isKing(from_piece) and from_-to == -2 and isRook(getPiece(to+1, board)) == Piece.rook:
-            cur_board = changePiece(to+1, cur_board, 0, piece_color)
+            cur_board = changePiece(to-2, cur_board, 0, 0)
+        elif isKing(from_piece) and from_-to == -2 and isRook(getPiece(to+1, cur_board)):
             cur_board = changePiece(to-1, cur_board, Piece.specialRook, piece_color)
+            cur_board = changePiece(to+1, cur_board, 0, 0)
 
         mask_from_bits = mask_route(from_)
         mask_to_bits = mask_route(to)
@@ -153,10 +153,11 @@ def getMoves(board, color):
 def isCheck(board, color):
     moves = getMoves(board, changeColor(color))
     for from_move in moves:
-        for to_move in moves[from_move]:
-            piece = getPiece(to_move, board)
-            if isKing(piece) and getColor(piece) == color:
-                return True
+        if moves[from_move]:
+            for to_move in moves[from_move]:
+                piece = getPiece(to_move, board)
+                if isKing(piece) and getColor(piece) == color:
+                    return True
     return False
 
 def isValid(from_route, cur_board):
@@ -477,8 +478,17 @@ def removeSpecial(piece):
     return piece & 15
 
 
-board = starting_board
+# board = starting_board
+
+
+E1 = getRouteBit(4, (Piece.king | Color.white))
+
+
+E7 = getRouteBit(63, (Piece.king | Color.black))
+A7 = getRouteBit(52, (Piece.rook | Color.black))
+H7 = getRouteBit(60, (Piece.rook | Color.black))
+
+board = (E7 | A7 | H7 | E1)
 
 print(board)
 print("{0:b}".format(board))
-

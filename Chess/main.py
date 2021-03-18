@@ -2,7 +2,7 @@ import pygame, sys, random
 import chess
 import bot
 
-pygame.mixer.pre_init(frequency = 44100, size = 32, channels = 1, buffer = 1024)
+pygame.mixer.pre_init(frequency=44100, size=32, channels=1, buffer=1024)
 pygame.init()
 
 place_sound = pygame.mixer.Sound("sounds/place.wav")
@@ -33,7 +33,8 @@ class Chess:
     def __init__(self, window_size):
         self.window_size = window_size
 
-        self.starting_board = 822600792108962701109752665142821874674704896976585017661690405272942910148120593644329604648004
+        # self.starting_board = 822600792108962701109752665142821874674704896976585017661690405272942910148120593644329604648004
+        self.starting_board = 934518772647114197112938351362149484002244967819837885914675392910601678180483530194841010962432
         self.board = self.starting_board
         self.board_squares = []
         self.board_pieces = []
@@ -148,8 +149,12 @@ class Chess:
                 old_board = self.board
                 self.board = chess.movePiece(move[0], move[1], self.board)
                 if old_board == self.board:
-                    move = chess.getRandomMove(self.board, chess.Color.Black)
-                    self.board = chess.movePiece(move[0], move[1], self.board)
+                    move = chess.getRandomMove(self.board, chess.Color.black)
+                    if move:
+                        self.board = chess.movePiece(move[0], move[1], self.board)
+                    else:
+                        self.game_status = False
+                        return
                 self.create_board_pieces()
                 self.attacking_squares = []
                 self.piece_from = None
@@ -170,8 +175,8 @@ class Chess:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1:
                             self.check_click_collision(mouse_rect)
-            self.blit()
 
+            self.blit()
             pygame.time.Clock().tick(60)
             pygame.display.update()
             self.play_bot()
