@@ -3,15 +3,24 @@ import math
 import numpy as np
 import random
 
-endgame_value = [6, 5, 5, 5, 5, 5, 5, 6,
-                 5, 4, 3, 3, 3, 3, 4, 5,
-                 5, 3, 2, 1, 1, 2, 3, 5,
-                 5, 3, 1, 0, 0, 1, 3, 5,
-                 5, 3, 1, 0, 0, 1, 3, 5,
-                 5, 3, 2, 1, 1, 2, 3, 5,
-                 5, 4, 3, 3, 3, 3, 4, 5,
-                 6, 5, 5, 5, 5, 5, 5, 6]
+endgame_value_king = [0, 1, 2, 3, 3, 2, 1, 0,
+                      1, 3, 4, 5, 5, 4, 3, 1,
+                      2, 4, 6, 7, 7, 6, 4, 2,
+                      3, 5, 7, 8, 8, 7, 5, 3,
+                      3, 5, 7, 8, 8, 7, 5, 3,
+                      2, 4, 6, 7, 7, 6, 4, 2,
+                      1, 3, 5, 4, 4, 5, 3, 1,
+                      0, 1, 2, 3, 3, 2, 1, 0]
 
+
+midgame_value = [0, 1, 1, 1, 1, 1, 1, 0,
+                 0, 1, 1, 2, 2, 1, 1, 0,
+                 1, 1, 2, 3, 3, 2, 1, 1,
+                 1, 1, 2, 3, 3, 2, 1, 1,
+                 1, 1, 2, 3, 3, 2, 1, 1,
+                 1, 1, 2, 3, 3, 2, 1, 1,
+                 0, 1, 1, 2, 2, 1, 1, 0,
+                 0, 1, 1, 1, 1, 1, 1, 0]
 
 earlygame_value = [0, 1, 1, 1, 1, 1, 1, 0,
                  0, 1, 2, 2, 2, 2, 1, 0,
@@ -71,34 +80,58 @@ def find_move(board, color):
 
 def calculate_move(board):
     score = 0
-    pieces = get_pieces(board)
+    pieces, black, white = get_pieces(board)
     for piece in pieces:
         if chess.isWhite(piece[0]):
+            color = chess.Color.white
             multiplier = -1
-            king = 1200
-        else:
-            multiplier = 1
             king = 1000
-        if chess.isPawn(piece[0]):
-            score += multiplier * 10
-        elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
-            score += multiplier * 30
-        elif chess.isRook(piece[0]):
-            score += multiplier * 50
-        elif chess.isQueen(piece[0]):
-            score += multiplier * 90
-        elif chess.isKing(piece[0]):
-            score += multiplier * king
+        else:
+            color = chess.Color.black
+            multiplier = 1
+            king = 1200
+
+        if len(pieces) > 10:
+            if chess.isPawn(piece[0]):
+                score += multiplier * 10
+            elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
+                score += multiplier * 30
+            elif chess.isRook(piece[0]):
+                score += multiplier * 50
+            elif chess.isQueen(piece[0]):
+                score += multiplier * 90
+            elif chess.isKing(piece[0]):
+                score += multiplier * king
+        else:
+            if chess.isPawn(piece[0]):
+                score += multiplier * 2
+            elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
+                score += multiplier * 6
+            elif chess.isRook(piece[0]):
+                score += multiplier * 7
+            elif chess.isQueen(piece[0]):
+                score += multiplier * 9
+            elif chess.isKing(piece[0]):
+                score += multiplier * king
 
         if len(pieces) > 26:
             if not chess.isKing(piece[1]):
                 score += earlygame_value[piece[1]]
 
+        elif len(pieces) > 10:
+            if not chess.isKing(piece[1]):
+                score += midgame_value[piece[1]]
+
         # Reward kings on keeping center in endgame **
-        if chess.isKing(piece[0]):
-            weight = 2//(len(pieces)/32)
-            score += weight * endgame_value[piece[1]]
-            score += 32 - distance_between_kings(board)
+        elif chess.isKing(piece[0]):
+            if chess.isCheck(board, color):
+                score -= 50
+            weight = -20//(len(pieces)/32)
+            score += weight * endgame_value_king[piece[1]]
+            if black > white:
+                score -= distance_between_kings(board)
+            elif white > black:
+                score += distance_between_kings(board)
     print(score)
     return score
 
@@ -109,8 +142,8 @@ def distance_between_kings(board):
             if king1:
                 x = abs(i % 8 - king1 % 8)
                 y = abs(i//8 - king1//8)
-                value = x+y
-                return value
+                value = int(math.sqrt(x**2+y**2))
+                return 16 - value
             else:
                 king1 = i
     return 16
@@ -128,11 +161,17 @@ def get_depth(board):
 
 def get_pieces(board):
     pieces = []
+    white = 0
+    black = 0
     for i in range(64):
         piece = chess.getPiece(i, board)
         if piece:
             pieces.append((piece, i))
-    return pieces
+        if chess.getColor(piece) == chess.Color.white:
+            white += 1
+        else:
+            black += 1
+    return pieces, black, white
 
 def change_color(color):
     if color == chess.Color.white:
