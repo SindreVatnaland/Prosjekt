@@ -23,13 +23,13 @@ midgame_value = [0, 1, 1, 1, 1, 1, 1, 0,
                  0, 1, 1, 1, 1, 1, 1, 0]
 
 earlygame_value = [0, 1, 1, 1, 1, 1, 1, 0,
-                 0, 1, 2, 2, 2, 2, 1, 0,
-                 0, 1, 2, 4, 4, 2, 1, 0,
-                 0, 1, 2, 5, 5, 2, 1, 0,
-                 0, 1, 2, 5, 5, 2, 1, 0,
-                 0, 1, 2, 4, 4, 2, 1, 0,
-                 0, 1, 2, 2, 2, 2, 1, 0,
-                 0, 1, 1, 1, 1, 1, 1, 0]
+                   0, 1, 2, 2, 2, 2, 1, 0,
+                   0, 1, 3, 4, 4, 3, 1, 0,
+                   0, 1, 4, 5, 5, 4, 1, 0,
+                   0, 1, 4, 5, 5, 4, 1, 0,
+                   0, 1, 3, 4, 4, 3, 1, 0,
+                   0, 1, 2, 2, 2, 2, 1, 0,
+                   0, 1, 1, 1, 1, 1, 1, 0]
 
 def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
     if depth == 0 or abs(calculate_move(board)) >= abs(10000):
@@ -80,7 +80,7 @@ def find_move(board, color):
 
 def calculate_move(board):
     score = 0
-    pieces, black, white = get_pieces(board)
+    pieces = get_pieces(board)
     for piece in pieces:
         if chess.isWhite(piece[0]):
             color = chess.Color.white
@@ -108,9 +108,9 @@ def calculate_move(board):
             elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
                 score += multiplier * 6
             elif chess.isRook(piece[0]):
-                score += multiplier * 7
-            elif chess.isQueen(piece[0]):
                 score += multiplier * 9
+            elif chess.isQueen(piece[0]):
+                score += multiplier * 12
             elif chess.isKing(piece[0]):
                 score += multiplier * king
 
@@ -128,11 +128,13 @@ def calculate_move(board):
                 score -= 50
             weight = -20//(len(pieces)/32)
             score += weight * endgame_value_king[piece[1]]
-            if black > white:
-                score -= distance_between_kings(board)
-            elif white > black:
-                score += distance_between_kings(board)
-    print(score)
+            score += distance_between_kings(board)
+
+        # Evaluate attacking squares on last depth calculation
+
+        # Evaluate position of every type of piece mid-game
+
+    # print(score)
     return score
 
 def distance_between_kings(board):
@@ -161,17 +163,11 @@ def get_depth(board):
 
 def get_pieces(board):
     pieces = []
-    white = 0
-    black = 0
     for i in range(64):
         piece = chess.getPiece(i, board)
         if piece:
             pieces.append((piece, i))
-        if chess.getColor(piece) == chess.Color.white:
-            white += 1
-        else:
-            black += 1
-    return pieces, black, white
+    return pieces
 
 def change_color(color):
     if color == chess.Color.white:
