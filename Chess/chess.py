@@ -160,6 +160,14 @@ def isCheck(board, color):
                     return True
     return False
 
+def get_opponent_attacking_aquares(board, color):
+    moves = getMoves(board, changeColor(color))
+    for from_move in moves:
+        if moves[from_move]:
+            for to_move in moves[from_move]:
+                piece = getPiece(to_move, board)
+    return moves
+
 def isValid(from_route, cur_board):
     from_piece = getPiece(from_route, cur_board)
     if isPawn(from_piece):
@@ -408,10 +416,11 @@ def findKingMoves(from_route, cur_board):
     if isKing(king) and not isSpecial(king):
         rook1 = getPiece(from_route+3, cur_board)
         rook2 = getPiece(from_route-4, cur_board)
-        if getPiece(from_route+1, cur_board) == 0 and getPiece(from_route+2, cur_board) == 0 and (isRook(rook1) and not isSpecial(rook1)):
+        if getPiece(from_route+1, cur_board) == 0 and getPiece(from_route+2, cur_board) == 0 and (isRook(rook1) and not isSpecial(rook1)):  # and not isCheck(cur_board, getColor(king)): recurtion error
             possible.append(from_route+2)
-        if getPiece(from_route-1, cur_board) == 0 and getPiece(from_route-2, cur_board) == 0 and getPiece(from_route-3, cur_board) == 0 and (isRook(rook2) and not isSpecial(rook2)):
+        if getPiece(from_route-1, cur_board) == 0 and getPiece(from_route-2, cur_board) == 0 and getPiece(from_route-3, cur_board) == 0 and (isRook(rook2) and not isSpecial(rook2)):  # and not isCheck(cur_board, getColor(king)):
             possible.append(from_route-2)
+
     return possible
 
 def undoSpecialPawns(color, cur_board):

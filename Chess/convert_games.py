@@ -95,7 +95,8 @@ def add_king_right(board, possible_moves, letter_number, move, openings, color):
 
 starting_board = 822600792108962701109752665142821874674704896976585017661690405272942910148120593644329604648004
 
-openings = {}
+openings = np.load('openings.npy', allow_pickle='TRUE').item()
+
 letter_number = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7}
 
 with open('games.txt') as games:
@@ -109,7 +110,6 @@ with open('games.txt') as games:
                 color = chess.Color.black
             possible_moves = chess.getMoves(board, color)
             move = move.split("x")
-            print(move)
             if len(move) > 1:
                 move = move[0]+move[1]
             else:
@@ -117,7 +117,6 @@ with open('games.txt') as games:
             move = move.strip("+")
             if len(move) == 4:
                 move = move[0]+move[2]+move[3]
-            print(move)
             # print(possible_moves)
             try:
                 if len(move) == 2: #pawn
@@ -149,12 +148,11 @@ with open('games.txt') as games:
             except:
                 board = starting_board
                 break
-            if i > 8:
-                print(j)
-                board = starting_board
-                print()
-                break
+            # if i > 8:
+            #     print(j)
+            #     board = starting_board
+            #     print()
+            #     break
 
-# np.save('openings.npy', openings)
+np.save('openings.npy', openings)
 
-dictionary = np.load('openings.npy', allow_pickle='TRUE').item()

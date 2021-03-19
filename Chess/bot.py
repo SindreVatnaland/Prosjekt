@@ -3,6 +3,24 @@ import math
 import numpy as np
 import random
 
+endgame_value = [6, 5, 5, 5, 5, 5, 5, 6,
+                 5, 4, 3, 3, 3, 3, 4, 5,
+                 5, 3, 2, 1, 1, 2, 3, 5,
+                 5, 3, 1, 0, 0, 1, 3, 5,
+                 5, 3, 1, 0, 0, 1, 3, 5,
+                 5, 3, 2, 1, 1, 2, 3, 5,
+                 5, 4, 3, 3, 3, 3, 4, 5,
+                 6, 5, 5, 5, 5, 5, 5, 6]
+
+
+earlygame_value = [0, 1, 1, 1, 1, 1, 1, 0,
+                 0, 1, 2, 2, 2, 2, 1, 0,
+                 0, 1, 2, 4, 4, 2, 1, 0,
+                 0, 1, 2, 5, 5, 2, 1, 0,
+                 0, 1, 2, 5, 5, 2, 1, 0,
+                 0, 1, 2, 4, 4, 2, 1, 0,
+                 0, 1, 2, 2, 2, 2, 1, 0,
+                 0, 1, 1, 1, 1, 1, 1, 0]
 
 def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
     if depth == 0 or abs(calculate_move(board)) >= abs(10000):
@@ -40,7 +58,6 @@ def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
                         best_move = (from_move, to_move)
         return best_move, lowest_score
 
-
 def find_move(board, color):
     openings = np.load('openings.npy', allow_pickle='TRUE').item()
     try:
@@ -57,56 +74,46 @@ def calculate_move(board):
     pieces = get_pieces(board)
     for piece in pieces:
         if chess.isWhite(piece[0]):
-            multiply = -1
-            king = 1000
-        else:
-            multiply = 1
+            multiplier = -1
             king = 1200
-
+        else:
+            multiplier = 1
+            king = 1000
         if chess.isPawn(piece[0]):
-            score += multiply * 10
+            score += multiplier * 10
         elif chess.isKnight(piece[0]) or chess.isBishop(piece[0]):
-            score += multiply * 30
+            score += multiplier * 30
         elif chess.isRook(piece[0]):
-            score += multiply * 50
+            score += multiplier * 50
         elif chess.isQueen(piece[0]):
-            score += multiply * 90
+            score += multiplier * 90
         elif chess.isKing(piece[0]):
-            score += multiply * king
+            score += multiplier * king
 
-        if len(pieces) > 10:
-            if (2 <= piece[1] % 8 <= 5) and chess.isWhite(piece[0]) and piece[1] >= 16 and not chess.isKing(piece[1]):
-                if piece[1] % 8 == 2 or 5:
-                    score += multiply * 1
-                else:
-                    score += multiply * 2
-            elif (piece[1] % 8 == 2 or 3 or 4 or 5) and chess.isWhite(piece[0]) and piece[1] <= 48 and not chess.isKing(piece[0]):
-                if piece[1] % 8 == 2 or 5:
-                    score += multiply * 1
-                else:
-                    score += multiply * 2
+        if len(pieces) > 26:
+            if not chess.isKing(piece[1]):
+                score += earlygame_value[piece[1]]
 
-        #Reward king on edge, needs fix
-        elif chess.isKing(piece[0]) and len(pieces) < 10:
-            weight = -5//(len(pieces)/10)
-            if 24 <= piece[1] <= 40:
-                score += multiply * 0 * weight
-            elif (16 <= piece[1] <= 23) or (40 <= piece[1] <= 47):
-                score += multiply * 1 * weight
-            elif (8 <= piece[1] <= 15) or (48 <= piece[1] <= 55):
-                score += multiply * 2 * weight
-            elif (0 <= piece[1] <= 7) or (56 <= piece[1] <= 63):
-                score += multiply * 3 * weight
-            if 3 <= (piece[1] % 8) <= 4:
-                score += multiply * 0 * weight
-            elif piece[1] % 8 == 2 or 5:
-                score += multiply * 1 * weight
-            elif piece[1] % 8 == 1 or 6:
-                score += multiply * 3 * weight
-            elif piece[1] % 8 == 0 or 7:
-                score += multiply * 5 * weight
+        # Reward kings on keeping center in endgame **
+        if chess.isKing(piece[0]):
+            weight = 2//(len(pieces)/32)
+            score += weight * endgame_value[piece[1]]
+            score += 32 - distance_between_kings(board)
     print(score)
     return score
+
+def distance_between_kings(board):
+    king1 = 0
+    for i in range(64):
+        if chess.isKing(chess.getPiece(i, board)):
+            if king1:
+                x = abs(i % 8 - king1 % 8)
+                y = abs(i//8 - king1//8)
+                value = x+y
+                return value
+            else:
+                king1 = i
+    return 16
 
 
 def get_depth(board):
