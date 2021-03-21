@@ -3,33 +3,106 @@ import math
 import numpy as np
 import random
 
-endgame_value_king = [0, 1, 2, 3, 3, 2, 1, 0,
-                      1, 3, 4, 5, 5, 4, 3, 1,
-                      2, 4, 6, 7, 7, 6, 4, 2,
-                      3, 5, 7, 8, 8, 7, 5, 3,
-                      3, 5, 7, 8, 8, 7, 5, 3,
-                      2, 4, 6, 7, 7, 6, 4, 2,
-                      1, 3, 5, 4, 4, 5, 3, 1,
-                      0, 1, 2, 3, 3, 2, 1, 0]
 
+# midgame_value = [0, 1, 1, 1, 1, 1, 1, 0,
+#                  0, 1, 1, 2, 2, 1, 1, 0,
+#                  1, 1, 2, 3, 3, 2, 1, 1,
+#                  1, 1, 2, 3, 3, 2, 1, 1,
+#                  1, 1, 2, 3, 3, 2, 1, 1,
+#                  1, 1, 2, 3, 3, 2, 1, 1,
+#                  0, 1, 1, 2, 2, 1, 1, 0,
+#                  0, 1, 1, 1, 1, 1, 1, 0]
+#
+# earlygame_value = [0, 1, 1, 1, 1, 1, 1, 0,
+#                    0, 1, 2, 2, 2, 2, 1, 0,
+#                    0, 1, 3, 4, 4, 3, 1, 0,
+#                    0, 1, 4, 5, 5, 4, 1, 0,
+#                    0, 1, 4, 5, 5, 4, 1, 0,
+#                    0, 1, 3, 4, 4, 3, 1, 0,
+#                    0, 1, 2, 2, 2, 2, 1, 0,
+#                    0, 1, 1, 1, 1, 1, 1, 0]
 
-midgame_value = [0, 1, 1, 1, 1, 1, 1, 0,
-                 0, 1, 1, 2, 2, 1, 1, 0,
-                 1, 1, 2, 3, 3, 2, 1, 1,
-                 1, 1, 2, 3, 3, 2, 1, 1,
-                 1, 1, 2, 3, 3, 2, 1, 1,
-                 1, 1, 2, 3, 3, 2, 1, 1,
-                 0, 1, 1, 2, 2, 1, 1, 0,
-                 0, 1, 1, 1, 1, 1, 1, 0]
+knight_value =[0, 1, 2, 2, 2, 2, 1, 0,
+               1, 2, 3, 3, 3, 3, 2, 1,
+               2, 3, 4, 4, 4, 3, 3, 2,
+               2, 3, 4, 4, 4, 4, 3, 2,
+               2, 3, 4, 4, 4, 4, 3, 2,
+               2, 3, 4, 4, 4, 4, 3, 2,
+               1, 2, 3, 3, 3, 3, 2, 1,
+               0, 1, 2, 2, 2, 2, 1, 0]
 
-earlygame_value = [0, 1, 1, 1, 1, 1, 1, 0,
-                   0, 1, 2, 2, 2, 2, 1, 0,
+bishop_value =[0, 1, 1, 1, 1, 1, 1, 0,
+               1, 3, 2, 2, 2, 2, 3, 1,
+               1, 1, 3, 2, 2, 3, 1, 1,
+               1, 1, 3, 3, 3, 3, 1, 1,
+               1, 1, 3, 3, 3, 3, 1, 1,
+               1, 1, 3, 2, 2, 3, 1, 1,
+               1, 3, 2, 2, 2, 2, 3, 1,
+               0, 1, 1, 1, 1, 1, 1, 0]
+
+rook_value =  [2, 2, 2, 2, 2, 2, 2, 2,
+               2, 3, 3, 3, 3, 3, 3, 2,
+               0, 1, 1, 1, 1, 1, 1, 0,
+               0, 1, 1, 1, 1, 1, 1, 0,
+               0, 1, 1, 1, 1, 1, 1, 0,
+               0, 1, 1, 1, 1, 1, 1, 0,
+               2, 3, 3, 3, 3, 3, 3, 2,
+               2, 2, 2, 2, 2, 2, 2, 2]
+
+pawn_early_value = [0, 0, 0, 0, 0, 0, 0, 0,
+                   1, 1, 1, 1, 1, 1, 1, 1,
                    0, 1, 3, 4, 4, 3, 1, 0,
                    0, 1, 4, 5, 5, 4, 1, 0,
                    0, 1, 4, 5, 5, 4, 1, 0,
                    0, 1, 3, 4, 4, 3, 1, 0,
-                   0, 1, 2, 2, 2, 2, 1, 0,
-                   0, 1, 1, 1, 1, 1, 1, 0]
+                   1, 1, 1, 1, 1, 1, 1, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0]
+
+pawn_mid_value =  [0, 0, 0, 0, 0, 0, 0, 0,
+                   1, 1, 0, 0, 0, 0, 1, 1,
+                   0, 1, 3, 4, 4, 3, 1, 0,
+                   0, 2, 2, 5, 5, 2, 2, 0,
+                   0, 2, 2, 5, 5, 2, 2, 0,
+                   1, 1, 3, 4, 4, 3, 1, 1,
+                   1, 1, 0, 0, 0, 0, 1, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0]
+
+pawn_late_value = [4, 4, 4, 4, 4, 4, 4, 4,
+                   3, 3, 3, 3, 3, 3, 3, 3,
+                   1, 1, 1, 1, 1, 1, 1, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   1, 1, 1, 1, 1, 1, 1, 1,
+                   3, 3, 3, 3, 3, 3, 3, 3,
+                   4, 4, 4, 4, 4, 4, 4, 4]
+
+queen_value = [0, 1, 1, 2, 2, 1, 1, 0,
+               1, 2, 2, 2, 2, 2, 2, 1,
+               1, 2, 3, 3, 3, 3, 2, 1,
+               2, 2, 3, 3, 3, 3, 2, 2,
+               2, 2, 3, 3, 3, 3, 2, 2,
+               1, 2, 3, 3, 3, 3, 2, 1,
+               1, 2, 2, 2, 2, 2, 2, 1,
+               0, 1, 1, 1, 1, 1, 1, 0]
+
+king_early_value = [3, 4, 3, 2, 2, 3, 4, 3,
+                   1, 2, 1, 1, 1, 1, 2, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0,
+                   1, 2, 1, 1, 1, 1, 2, 1,
+                   3, 4, 3, 2, 2, 3, 4, 3]
+
+king_end_value = [0, 1, 2, 3, 3, 2, 1, 0,
+                  1, 3, 4, 5, 5, 4, 3, 1,
+                  2, 4, 6, 7, 7, 6, 4, 2,
+                  3, 5, 7, 8, 8, 7, 5, 3,
+                  3, 5, 7, 8, 8, 7, 5, 3,
+                  2, 4, 6, 7, 7, 6, 4, 2,
+                  1, 3, 5, 4, 4, 5, 3, 1,
+                  0, 1, 2, 3, 3, 2, 1, 0]
+
 
 def MinMax(board, depth, color, alpha=-math.inf, beta=math.inf):
     if depth == 0 or abs(calculate_move(board)) >= abs(10000):
@@ -114,20 +187,42 @@ def calculate_move(board):
             elif chess.isKing(piece[0]):
                 score += multiplier * king
 
-        if len(pieces) > 26:
-            if not chess.isKing(piece[1]):
-                score += earlygame_value[piece[1]]
+        if len(pieces) > 28:
+            if chess.isPawn(piece[1]):
+                score += multiplier * pawn_early_value[piece[1]]
+            elif chess.isRook(piece[1]):
+                score += multiplier * rook_value[piece[1]]
+            elif chess.isBishop(piece[1]):
+                score += multiplier * bishop_value[piece[1]]
+            elif chess.isKnight(piece[1]):
+                score += multiplier * knight_value[piece[1]]
+            elif chess.isQueen(piece[1]):
+                score += multiplier * queen_value[piece[1]]
+            elif chess.isKing(piece[1]):
+                score += multiplier * king_early_value[piece[1]]
 
         elif len(pieces) > 10:
-            if not chess.isKing(piece[1]):
-                score += midgame_value[piece[1]]
+            if chess.isPawn(piece[1]):
+                score += multiplier * pawn_mid_value[piece[1]]
+            elif chess.isRook(piece[1]):
+                score += multiplier * rook_value[piece[1]]
+            elif chess.isBishop(piece[1]):
+                score += multiplier * bishop_value[piece[1]]
+            elif chess.isKnight(piece[1]):
+                score += multiplier * knight_value[piece[1]]
+            elif chess.isQueen(piece[1]):
+                score += multiplier * queen_value[piece[1]]
+            elif chess.isKing(piece[1]):
+                score += multiplier * king_early_value[piece[1]]
 
         # Reward kings on keeping center in endgame **
-        elif chess.isKing(piece[0]):
+        else:
+            if chess.isPawn(piece[1]):
+                score += multiplier * pawn_late_value[piece[1]]
             if chess.isCheck(board, color):
                 score -= 50
             weight = -20//(len(pieces)/32)
-            score += weight * endgame_value_king[piece[1]]
+            score += weight * king_end_value[piece[1]]
             score += distance_between_kings(board)
 
         # Evaluate attacking squares on last depth calculation

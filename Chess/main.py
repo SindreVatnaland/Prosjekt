@@ -45,7 +45,8 @@ class Chess:
         self.turn = chess.Color.white
 
         self.game_status = True
-        self.bot = True
+        self.bot_black = True
+        self.bot_white = True
         self.create_highlights()
         self.create_board_pieces()
         self.play_game()
@@ -139,29 +140,54 @@ class Chess:
             self.turn = chess.Color.white
 
     def play_bot(self):
-        if self.bot:
-            if self.turn == chess.Color.black:
-                move = (bot.find_move(self.board, chess.Color.black))
-                if move == None:
-                    self.game_status = False
-                    return
-                print(move[0], move[1])
-                old_board = self.board
-                self.board = chess.movePiece(move[0], move[1], self.board)
-                if old_board == self.board:
-                    move = chess.getRandomMove(self.board, chess.Color.black)
-                    if move:
-                        self.board = chess.movePiece(move[0], move[1], self.board)
-                    else:
+        if self.turn == chess.Color.black:
+            if self.bot_black:
+                if self.turn == chess.Color.black:
+                    move = (bot.find_move(self.board, chess.Color.black))
+                    if move is None:
                         self.game_status = False
                         return
-                self.create_board_pieces()
-                self.attacking_squares = []
-                self.piece_from = None
-                self.piece_to = None
-                self.change_turn()
-                return
+                    print(move[0], move[1])
+                    old_board = self.board
+                    self.board = chess.movePiece(move[0], move[1], self.board)
+                    if old_board == self.board:
+                        move = chess.getRandomMove(self.board, chess.Color.black)
+                        if move:
+                            self.board = chess.movePiece(move[0], move[1], self.board)
+                        else:
+                            self.game_status = False
+                            return
+                    self.create_board_pieces()
+                    self.attacking_squares = []
+                    self.piece_from = None
+                    self.piece_to = None
+                    self.change_turn()
+                    return
 
+        elif self.turn == chess.Color.white:
+            if self.bot_white:
+                if self.turn == chess.Color.white:
+                    move = (bot.find_move(self.board, chess.Color.white))
+                    if move is None:
+                        self.game_status = False
+                        return
+                    print(move[0], move[1])
+                    old_board = self.board
+                    self.board = chess.movePiece(move[0], move[1], self.board)
+                    if old_board == self.board:
+                        move = chess.getRandomMove(self.board, chess.Color.white)
+                        if move:
+                            self.board = chess.movePiece(move[0], move[1], self.board)
+                        else:
+                            self.game_status = False
+                            return
+                    self.create_board_pieces()
+                    self.attacking_squares = []
+                    self.piece_from = None
+                    self.piece_to = None
+                    self.change_turn()
+                    return
+        return
 
     def play_game(self):
         while True:

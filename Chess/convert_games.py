@@ -125,25 +125,25 @@ with open('games.txt') as games:
                 elif len(move) == 3 and move[0].islower():
                     board, openings = add_pawn(board, possible_moves, letter_number, move, openings)
 
-                elif len(move) == 3 and move[0]=="N": #knight
+                elif len(move) == 3 and move[0]=="N":  # knight
                     board, openings = add_knight(board, possible_moves, letter_number, move, openings)
 
-                elif len(move) == 3 and move[0]=="B": #bishop
+                elif len(move) == 3 and move[0]=="B":  # bishop
                     board, openings = add_bishop(board, possible_moves, letter_number, move, openings)
 
-                elif len(move) == 3 and move[0]=="R": #rook
+                elif len(move) == 3 and move[0]=="R":  # rook
                   board, openings = add_rook(board, possible_moves, letter_number, move, openings)
 
-                elif len(move) == 3 and move[0]=="Q": #queen
+                elif len(move) == 3 and move[0]=="Q":  # queen
                     board, openings = add_queen(board, possible_moves, letter_number, move, openings)
 
-                elif len(move) == 3 and move[0]=="K": #king
+                elif len(move) == 3 and move[0]=="K":  # king
                     board, openings = add_king(board, possible_moves, letter_number, move, openings)
 
-                elif move == "O-O":
+                elif move == "O-O":  # Castle king side
                     board, openings = add_king_right(board, possible_moves, letter_number, move, openings, color)
 
-                elif move == "O-O-O":
+                elif move == "O-O-O":  # Castle queen side
                     board, openings = add_king_left(board, possible_moves, letter_number, move, openings, color)
             except:
                 board = starting_board
