@@ -46,7 +46,7 @@ class Chess:
 
         self.game_status = True
         self.bot_black = True
-        self.bot_white = True
+        self.bot_white = False
         self.create_highlights()
         self.create_board_pieces()
         self.play_game()
