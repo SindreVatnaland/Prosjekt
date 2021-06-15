@@ -108,13 +108,6 @@ def temp():
         elif i == "code":
             code += value
     if code in dictionary:
-        # url = f'https://barcode.tec-it.com/barcode.ashx?data={code}&code=EAN13'
-        # page = requests.get(url)
-        #
-        # f_ext = os.path.splitext(url)[-1]
-        # f_name = "barcodes/{code}.jpg"
-        # with open(f_name, 'wb') as f:
-        #     f.write(page.content)
         name = dictionary[code]
     return render_template("add_item.html", shelf=shelf, code=code, name=name, len=len(name), len2=len(code))
 
@@ -271,4 +264,4 @@ def send_varer():
     return render_template('send_varer.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, port=5000)
